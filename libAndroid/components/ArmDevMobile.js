@@ -13,7 +13,7 @@ class ArmDevMobile extends Component {
       case 'Registration':
         return <Registration navigator={navigator} {...route.passProps} />;
         break;
-    }z
+    }
   }
   configureScene(route, routeStack){
     switch (route.name) {
