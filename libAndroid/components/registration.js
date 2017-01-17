@@ -6,7 +6,8 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  StatusBar
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -14,10 +15,24 @@ const { width, height } = Dimensions.get('window');
 export default
 class Registration extends Component {
   _navigate(propName, name) {
+    if(propName === 'toSignIn'){
+      this.props.navigator.push({
+        name: 'SignIn',
+        passProps: {
+        },
+      });
+    }else if(propName === 'toSignUp'){
+      this.props.navigator.push({
+        name: 'SignUp',
+        passProps: {
+        },
+      });
+    }
   }
   render(){
     return(
       <View style={style.container}>
+       <StatusBar backgroundColor="#bf0e0e" barStyle="light-content" />
         <View style={style.smallContainer}>
           <View style={style.titleContainer}>
             <Text style={style.title}>ArmDev</Text>
@@ -28,11 +43,13 @@ class Registration extends Component {
           <View style={style.button}>
             <Button 
               title='Sign in'
+              onPress={() => this._navigate('toSignIn')}
             />
           </View>
           <View style={style.button}>
             <Button 
               title='Sign up'
+              onPress={() => this._navigate('toSignUp')}
             />
           </View>
           <View style={style.openSourceContainer}>
@@ -57,7 +74,7 @@ const style = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    color: 'red'
+    color: '#bf0e0e'
   },
   smallContainer: {
     width: 0.8 * width,
