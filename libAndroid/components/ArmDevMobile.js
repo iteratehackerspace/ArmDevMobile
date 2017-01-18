@@ -9,6 +9,7 @@ import Registration from './registration';
 import SignIn from './signIn';
 import SignUp from './signUp';
 import Feed from './feed';
+import Post from './post';
 export default 
 class ArmDevMobile extends Component {
   renderScene(route, navigator) {
@@ -25,10 +26,16 @@ class ArmDevMobile extends Component {
       case 'Feed':
         return <Feed  navigator={navigator} {...route.passProps} />;
         break;
+      case 'Post':
+        return <Post navigator={navigator} {...route.passProps} />;
+        break;
     }
   }
   configureScene(route, routeStack){
     switch (route.name) {
+      case 'Post':
+        return Navigator.SceneConfigs.FadeAndroid
+        break;
       default:
         return Navigator.SceneConfigs.PushFromRight;
         break;

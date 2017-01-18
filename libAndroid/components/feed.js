@@ -14,12 +14,20 @@ const { width, height } = Dimensions.get('window');
 export default
 class Feed extends Component {
   _navigate(propName, name) {
+    if(propName === 'toPost'){
+      this.props.navigator.push({
+        name: 'Post',
+        passProps: {
+        },
+      });
+    }
   }
   render(){
     return(
       <View style={style.container}>
         <TouchableOpacity
-          activeOpacity={0.9}>
+          activeOpacity={0.9}
+          onPress={() => this._navigate('toPost')}>
           <View style={style.postStyle}>
           </View>
         </TouchableOpacity>
