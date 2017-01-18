@@ -7,7 +7,8 @@ import {
   Button,
   StyleSheet,
   Dimensions,
-  StatusBar
+  StatusBar,
+  Linking
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -28,6 +29,11 @@ class Registration extends Component {
         },
       });
     }
+  }
+  openGitLink() {
+    const url = 'https://github.com/iteratehackerspace/ArmDevMobile';
+    Linking.openURL(url)
+    .catch(err => console.error('An error occurred', err));
   }
   render(){
     return(
@@ -54,7 +60,13 @@ class Registration extends Component {
           </View>
           <View style={style.openSourceContainer}>
             <Text style={style.openSource}>Our project is fully open-source,</Text>
-            <Text style={style.openSource}>you can find it HERE.</Text>
+            <Text style={style.openSource}>you can find it:</Text>
+            <TouchableOpacity 
+              onPress={() => {this.openGitLink()}}>
+                <Text style={style.linkStyle}>
+                  HERE
+                </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -95,5 +107,8 @@ const style = StyleSheet.create({
   },
   button: {
     marginBottom: 10
+  },
+  linkStyle: {
+    color: 'blue'
   }
 });
