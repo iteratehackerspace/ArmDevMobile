@@ -8,6 +8,7 @@ import {
 import Registration from './registration';
 import SignIn from './signIn';
 import SignUp from './signUp';
+import Feed from './feed';
 export default 
 class ArmDevMobile extends Component {
   renderScene(route, navigator) {
@@ -20,6 +21,9 @@ class ArmDevMobile extends Component {
         break;
       case 'SignUp':
         return <SignUp navigator={navigator} {...route.passProps} />;
+        break;
+      case 'Feed':
+        return <Feed  navigator={navigator} {...route.passProps} />;
         break;
     }
   }

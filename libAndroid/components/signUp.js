@@ -14,6 +14,11 @@ const { width, height } = Dimensions.get('window');
 export default
 class Registration extends Component {
   _navigate(propName, name) {
+    this.props.navigator.push({
+      name: 'Feed',
+      passProps: {
+      },
+    });
   }
   render(){
     return(
@@ -24,7 +29,9 @@ class Registration extends Component {
             onPress={() => this.props.navigator.pop()}>
             <Text style={style.headerText}>X</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={style.headerTextContainer}>
+          <TouchableOpacity 
+            style={style.headerTextContainer}
+            onPress={() => this._navigate()}>
             <Text style={style.headerText}>Done</Text>
           </TouchableOpacity>
         </View>
