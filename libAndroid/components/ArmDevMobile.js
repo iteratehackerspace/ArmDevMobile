@@ -10,6 +10,7 @@ import SignIn from './signIn';
 import SignUp from './signUp';
 import Feed from './feed';
 import Post from './post';
+import You from './you';
 export default 
 class ArmDevMobile extends Component {
   renderScene(route, navigator) {
@@ -28,6 +29,9 @@ class ArmDevMobile extends Component {
         break;
       case 'Post':
         return <Post navigator={navigator} {...route.passProps} />;
+        break;
+      case 'You':
+        return <You navigator={navigator} {...route.passProps} />;
         break;
     }
   }

@@ -7,53 +7,37 @@ import {
   Button,
   StyleSheet,
   Dimensions,
-  ScrollView,
   Image,
+  ScrollView,
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
-
+import { reduxStore } from '../containers/App';
+let store;
 export default
-class Feed extends Component {
-  _navigate(propName, name) {
-    if(propName === 'toPost'){
-      this.props.navigator.push({
-        name: 'Post',
-        passProps: {
-        },
-      });
-    }else if(propName === 'toYou'){
-      this.props.navigator.push({
-        name: 'You',
-        passProps: {  
-        },
-      });
-    }
-  }
+class You extends Component {
   render(){
     return(
-      <View>
+      <View style={style.container}>
         <ScrollView>
-          <View style={style.container}>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => this._navigate('toPost')}>
-              <View style={style.postStyle}>
-              </View>
-            </TouchableOpacity>
+          <View>
+            <Image
+              style={style.imageStyleUser}
+              source={require('../assets/trump.jpg')}
+            />
           </View>
         </ScrollView>
         <View style={style.footer}>
           <TouchableOpacity 
-            style={style.feedButtonContainer}>
+            style={style.feedButtonContainer}
+            onPress={() => this.props.navigator.pop()}>
             <Image
               style={style.imageStyle}
               source={require('../assets/feedButton.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity 
-            style={style.youButtonContainer}
-            onPress={() => this._navigate('toYou')}>
+            style={style.youButtonContainer}>
             <Image
               style={style.imageStyle}
               source={require('../assets/youButton.png')}
@@ -61,19 +45,13 @@ class Feed extends Component {
           </TouchableOpacity>
         </View>
       </View>
-    );
+    )
   }
 }
 const style = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0d6c9'
-  },
-  postStyle: {
-    height: 2 * height,
-    width: width,
-    backgroundColor: 'white',
-    marginBottom: 5
   },
   footer: {
     backgroundColor: '#bf0e0e',
@@ -91,5 +69,11 @@ const style = StyleSheet.create({
     width: 20,
     marginLeft: 20,
     marginRight: 20,
+  },
+  imageStyleUser: {
+    width: 50,
+    height: 50,
+    borderRadius: 1000,
+    marginLeft: 20,
   }
 });
