@@ -112,7 +112,8 @@ const style = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0d6c9',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 0.05 * height,
   },
   titleContainer: {
     alignItems: 'center',

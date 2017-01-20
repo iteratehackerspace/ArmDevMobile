@@ -67,7 +67,8 @@ class Feed extends Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0d6c9'
+    backgroundColor: '#f0d6c9',
+    marginTop: 0.05 * height,
   },
   postStyle: {
     height: 2 * height,

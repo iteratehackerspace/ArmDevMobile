@@ -95,7 +95,8 @@ class You extends Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0d6c9'
+    backgroundColor: '#f0d6c9',
+    marginTop: 0.05 * height,
   },
   footer: {
     backgroundColor: '#bf0e0e',
