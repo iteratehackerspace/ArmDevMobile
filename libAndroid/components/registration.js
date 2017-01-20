@@ -19,21 +19,55 @@ class Registration extends Component {
     if(propName === 'toSignIn'){
       this.props.navigator.push({
         name: 'SignIn',
+        rightButton: (
+          <TouchableOpacity 
+            style={style.headerTextContainer}
+            onPress={() => this._navigate('toFeed')}>
+            <Text style={style.headerText}>Done</Text>
+          </TouchableOpacity>
+        ),
+        leftButton: (
+          <TouchableOpacity 
+            style={style.headerTextContainer}
+            onPress={() => this.props.navigator.pop()}>
+            <Text style={style.headerText}>X</Text>
+          </TouchableOpacity>
+        ),
         passProps: {
         },
       });
     }else if(propName === 'toSignUp'){
       this.props.navigator.push({
         name: 'SignUp',
+        rightButton: (
+          <TouchableOpacity 
+            style={style.headerTextContainer}
+            onPress={() => this._navigate('toFeed')}>
+            <Text style={style.headerText}>Done</Text>
+          </TouchableOpacity>
+        ),
+        leftButton: (
+          <TouchableOpacity 
+            style={style.headerTextContainer}
+            onPress={() => this.props.navigator.pop()}>
+            <Text style={style.headerText}>X</Text>
+          </TouchableOpacity>
+        ),
         passProps: {
         },
       });
+    }else if(propName === 'toFeed'){
+        this.props.navigator.push({
+          name: 'Feed',
+          passProps: {
+          },
+        });
     }
   }
   openGitLink() {
     const url = 'https://github.com/iteratehackerspace/ArmDevMobile';
     Linking.openURL(url)
-    .catch(err => console.error('An error occurred', err));
+    .catch(err => console.error('An error occurred while opening link', err));
   }
   render(){
     return(
@@ -110,5 +144,13 @@ const style = StyleSheet.create({
   },
   linkStyle: {
     color: 'blue'
-  }
+  },
+  headerTextContainer: {
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  headerText: {
+    fontSize: 17,
+    color: 'black',
+  },
 });

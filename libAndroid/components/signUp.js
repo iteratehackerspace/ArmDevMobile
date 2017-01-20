@@ -13,28 +13,9 @@ const { width, height } = Dimensions.get('window');
 
 export default
 class Registration extends Component {
-  _navigate(propName, name) {
-    this.props.navigator.push({
-      name: 'Feed',
-      passProps: {
-      },
-    });
-  }
   render(){
     return(
       <View style={style.container}>
-        <View style={style.header}>
-          <TouchableOpacity 
-            style={style.headerTextContainer}
-            onPress={() => this.props.navigator.pop()}>
-            <Text style={style.headerText}>X</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={style.headerTextContainer}
-            onPress={() => this._navigate()}>
-            <Text style={style.headerText}>Done</Text>
-          </TouchableOpacity>
-        </View>
         <View style={style.smallContainer}>
           <Text style={style.textStyle}>Full Name:</Text>
           <TextInput 
@@ -58,20 +39,8 @@ class Registration extends Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0d6c9'
-  },
-  header: {
-    height: 40,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: 'black'
-  },
-  headerTextContainer: {
-    margin: 10
-  },
-  headerText: {
-    fontSize: 17
+    backgroundColor: '#f0d6c9',
+    marginTop: 0.05 * height,
   },
   smallContainer: {
     flexDirection: 'row',
@@ -83,6 +52,7 @@ const style = StyleSheet.create({
   },
   textStyle: {
     width: 0.3 * width,
-    fontSize: 20
+    fontSize: 20,
+    color: 'black',
   }
 });
