@@ -17,14 +17,18 @@ class SignIn extends Component {
     return(
       <View style={style.container}>
         <View style={style.smallContainer}>
-          <Text style={style.textStyle}>Email:</Text>
+          <Text style={style.textStyle}>Email or username:</Text>
           <TextInput 
             style={style.textInputStyle}
+            onChangeText={this.props.onEmailOrUsernameChange} 
           />
         </View>
         <View style={style.smallContainer}>
           <Text style={style.textStyle}>Password:</Text>
-          <TextInput style={style.textInputStyle}/>
+          <TextInput 
+            style={style.textInputStyle}
+            onChangeText={this.props.onPasswordChange}
+          />
         </View>
       </View>
     );

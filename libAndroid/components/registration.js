@@ -15,6 +15,32 @@ const { width, height } = Dimensions.get('window');
 
 export default
 class Registration extends Component {
+  constructor(){
+    super();
+    this.state = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      userName: '',
+      password: '',
+    }
+  }
+  onFirstNameChange(firstName){this.setState({firstName})}
+  onLastNameChange(lastName){this.setState({lastName})}
+  onEmailChange(email){this.setState({email})}
+  onUserNameChange(userName){this.setState({userName})}
+  onPasswordChange(password){this.setState({password})}
+  onEmailOrUsernameChange(emailOrUsername){this.setState({emailOrUsername})}
+  cleanAll(){
+    this.setState({
+      firstName: '',
+      lastName: '',
+      email: '',
+      userName: '',
+      password: '',
+      emailOrUsername: '',
+    })
+  }
   _navigate(propName, name) {
     if(propName === 'toSignIn'){
       this.props.navigator.push({
@@ -22,18 +48,27 @@ class Registration extends Component {
         rightButton: (
           <TouchableOpacity 
             style={style.headerTextContainer}
-            onPress={() => this._navigate('toFeed')}>
-            <Text style={style.headerText}>Done</Text>
+            onPress={() => {
+              this._navigate('toFeed');
+              this.cleanAll();
+            }}>
+          <Text style={style.headerText}>Done</Text>
           </TouchableOpacity>
         ),
         leftButton: (
           <TouchableOpacity 
             style={style.headerTextContainer}
-            onPress={() => this.props.navigator.pop()}>
-            <Text style={style.headerText}>X</Text>
+            onPress={() => {
+              this.sendSigning();
+              this.props.navigator.pop();
+              this.cleanAll();
+            }}>
+          <Text style={style.headerText}>X</Text>
           </TouchableOpacity>
         ),
         passProps: {
+          onPasswordChange: (data) => this.onPasswordChange(data),
+          onEmailOrUsernameChange: (data) => this.onEmailOrUsernameChange(data),
         },
       });
     }else if(propName === 'toSignUp'){
@@ -42,18 +77,30 @@ class Registration extends Component {
         rightButton: (
           <TouchableOpacity 
             style={style.headerTextContainer}
-            onPress={() => this._navigate('toFeed')}>
+            onPress={() => {
+              this.sendSigning();
+              this.cleanAll();
+              this._navigate('toFeed');
+            }}>
             <Text style={style.headerText}>Done</Text>
           </TouchableOpacity>
         ),
         leftButton: (
           <TouchableOpacity 
             style={style.headerTextContainer}
-            onPress={() => this.props.navigator.pop()}>
+            onPress={() => {
+              this.props.navigator.pop();
+              this.cleanAll();
+            }}>
             <Text style={style.headerText}>X</Text>
           </TouchableOpacity>
         ),
         passProps: {
+          onFirstNameChange: (data) => this.onFirstNameChange(data),
+          onLastNameChange: (data) => this.onLastNameChange(data),
+          onEmailChange: (data) => this.onEmailChange(data),
+          onUserNameChange: (data) => this.onUserNameChange(data),
+          onPasswordChange: (data) => this.onPasswordChange(data),
         },
       });
     }else if(propName === 'toFeed'){
@@ -63,6 +110,33 @@ class Registration extends Component {
           },
         });
     }
+  }
+  sendSigning(
+    firstName,
+    lastName,
+    email,
+    userName,
+    password,
+    emailOrUsername,
+    scene
+  ){
+    const request_options = {
+      method: 'post',
+      headers: new Headers({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }),
+      body:JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        userName,
+        password,
+        emailOrUsername,
+        scene
+      }),
+    };
+    fetch('http://localhost:8080/user_registration', request_options);
   }
   openGitLink() {
     const url = 'https://github.com/iteratehackerspace/ArmDevMobile';

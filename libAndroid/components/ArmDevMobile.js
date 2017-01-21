@@ -46,25 +46,6 @@ class ArmDevMobile extends Component {
         break;
     }
   }
-  // componentWillMount(){
-  //   const options = {
-  //     
-  //   }
-  //   const request_options = {
-  //     method: 'post',
-  //     headers: new Headers({
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //     }),
-  //     body:JSON.stringify({
-  //       fullName : 'Edgar Khanzadian',
-  //       email : 'some.email@hey.ru',
-  //       password: '123123',
-  //     }),
-  //   };
-  //   const hey = fetch('http://192.168.1.160:8080/user_registration', request_options)
-  //   console.log(hey);
-  // }
   render() {
     return(
       <Navigator

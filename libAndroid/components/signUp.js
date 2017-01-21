@@ -17,20 +17,39 @@ class Registration extends Component {
     return(
       <View style={style.container}>
         <View style={style.smallContainer}>
-          <Text style={style.textStyle}>Full Name:</Text>
+          <Text style={style.textStyle}>First Name:</Text>
           <TextInput 
+            onChangeText={this.props.onFirstNameChange} 
+            style={style.textInputStyle}
+          />
+        </View>
+        <View style={style.smallContainer}>
+          <Text style={style.textStyle}>Last Name:</Text>
+          <TextInput 
+            onChangeText={this.props.onLastNameChange} 
+            style={style.textInputStyle}
+          />
+        </View>
+        <View style={style.smallContainer}>
+          <Text style={style.textStyle}>Username:</Text>
+          <TextInput 
+            onChangeText={this.props.onUserNameChange} 
             style={style.textInputStyle}
           />
         </View>
         <View style={style.smallContainer}>
           <Text style={style.textStyle}>Email:</Text>
           <TextInput 
+            onChangeText={this.props.onEmailChange} 
             style={style.textInputStyle}
           />
         </View>
         <View style={style.smallContainer}>
           <Text style={style.textStyle}>Password:</Text>
-          <TextInput style={style.textInputStyle}/>
+          <TextInput 
+            onChangeText={this.props.onPasswordChange} 
+            style={style.textInputStyle}
+          />
         </View>
       </View>
     );
