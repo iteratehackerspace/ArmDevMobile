@@ -19,6 +19,13 @@ class Feed extends Component {
     if(propName === 'toPost'){
       this.props.navigator.push({
         name: 'Post',
+        leftButton: (
+          <TouchableOpacity 
+            style={style.headerTextContainer}
+            onPress={() => this.props.navigator.pop()}>
+            <Text style={style.headerText}>X</Text>
+          </TouchableOpacity>
+        ),
         passProps: {
         },
       });
@@ -92,5 +99,13 @@ const style = StyleSheet.create({
     width: 20,
     marginLeft: 20,
     marginRight: 20,
-  }
+  },
+  headerTextContainer: {
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  headerText: {
+    fontSize: 17,
+    color: 'black',
+  },
 });
