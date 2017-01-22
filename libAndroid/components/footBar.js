@@ -20,7 +20,33 @@ export default class FootBar extends Component {
       tab: 'Feed'
     }
   }
-  
+  _navigate(propName, name) {
+    if(propName === 'toWritePost'){
+      this.props.navigator.push({
+        name: 'WritePost',
+        rightButton: (
+          <TouchableOpacity 
+            style={style.headerTextContainer}
+            onPress={() => {
+              this.props.navigator.pop();
+            }}>
+            <Text style={style.headerText}>Post</Text>
+          </TouchableOpacity>
+        ),
+        leftButton: (
+          <TouchableOpacity 
+            style={style.headerTextContainer}
+            onPress={() => {
+              this.props.navigator.pop();
+            }}>
+            <Text style={style.headerText}>Close</Text>
+          </TouchableOpacity>
+        ),
+        passProps: {
+        },
+      });
+    }
+  }
   onTabSelect(tab) {
     this.setState({ tab })
   }
@@ -36,6 +62,14 @@ export default class FootBar extends Component {
           <Image
             style={style.imageStyle}
             source={require('../assets/feedButton.png')}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={style.youButtonContainer}
+          onPress={() => this._navigate('toWritePost')}>
+          <Image
+            style={style.imageStyle}
+            source={require('../assets/writePost.png')}
           />
         </TouchableOpacity>
         <TouchableOpacity 
@@ -101,5 +135,13 @@ const style = StyleSheet.create({
     width: 20,
     marginLeft: 20,
     marginRight: 20,
+  },
+  headerTextContainer: {
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  headerText: {
+    fontSize: 17,
+    color: 'black',
   },
 })

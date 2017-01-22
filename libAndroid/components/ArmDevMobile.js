@@ -13,6 +13,7 @@ import Feed from './feed';
 import Post from './post';
 import You from './you';
 import FootBar from './footBar';
+import WritePost from './writePost';
 export default 
 class ArmDevMobile extends Component {
   renderScene(route, navigator) {
@@ -38,12 +39,18 @@ class ArmDevMobile extends Component {
       case 'FootBar':
         return <FootBar navigator={navigator} {...route.passProps} />;
         break;
+      case 'WritePost':
+        return <WritePost navigator={navigator} {...route.passProps} />;
+        break;
     }
   }
   configureScene(route, routeStack){
     switch (route.name) {
       case 'Post':
         return Navigator.SceneConfigs.FadeAndroid
+        break;
+      case 'WritePost':
+        return Navigator.SceneConfigs.FloatFromBottom;
         break;
       default:
         return Navigator.SceneConfigs.PushFromRight;
