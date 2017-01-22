@@ -39,8 +39,7 @@ class Feed extends Component {
   }
   render(){
     return(
-      <View>
-        <ScrollView>
+        <ScrollView style={{backgroundColor: '#f0d6c9',height:height}}>
           <View style={style.container}>
             <TouchableOpacity
               activeOpacity={0.9}
@@ -50,24 +49,6 @@ class Feed extends Component {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        <View style={style.footer}>
-          <TouchableOpacity 
-            style={style.feedButtonContainer}>
-            <Image
-              style={style.imageStyle}
-              source={require('../assets/feedButton.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={style.youButtonContainer}
-            onPress={() => this._navigate('toYou')}>
-            <Image
-              style={style.imageStyle}
-              source={require('../assets/youButton.png')}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
     );
   }
 }
@@ -78,27 +59,10 @@ const style = StyleSheet.create({
     marginTop: 0.05 * height,
   },
   postStyle: {
-    height: 2 * height,
+    height: 0.3 * height,
     width: width,
     backgroundColor: 'white',
     marginBottom: 5
-  },
-  footer: {
-    backgroundColor: '#bf0e0e',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  feedButtonContainer: {
-    margin: 10,
-  },
-  youButtonContainer: {
-    margin: 10,
-  },
-  imageStyle: {
-    height: 20,
-    width: 20,
-    marginLeft: 20,
-    marginRight: 20,
   },
   headerTextContainer: {
     marginLeft: 10,

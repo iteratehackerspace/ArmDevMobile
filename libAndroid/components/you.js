@@ -25,16 +25,16 @@ class You extends Component {
         <View
           key={idx}
           style={style.postContainer}>
-          <TouchableOpacity
+          <View
             style={style.postTextContainer}>
             <Text style={style.postText}>{post.post.title}</Text>
-          </TouchableOpacity>
+          </View>
         </View>
       );
     });
     return(
-      <View style={style.container}>
-        <ScrollView>
+      <ScrollView style={{backgroundColor: '#f0d6c9',height: height}}>
+        <View style={style.container}>
           <View style={style.imageWithNameContainer}>
             <View style={style.imageWithName}>
               <Image
@@ -70,25 +70,8 @@ class You extends Component {
           <View style={style.postsContainer}>
             {usersPosts}
           </View>
-        </ScrollView>
-        <View style={style.footer}>
-          <TouchableOpacity 
-            style={style.feedButtonContainer}
-            onPress={() => this.props.navigator.pop()}>
-            <Image
-              style={style.imageStyle}
-              source={require('../assets/feedButton.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={style.youButtonContainer}>
-            <Image
-              style={style.imageStyle}
-              source={require('../assets/youButton.png')}
-            />
-          </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -97,23 +80,6 @@ const style = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0d6c9',
     marginTop: 0.05 * height,
-  },
-  footer: {
-    backgroundColor: '#bf0e0e',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  feedButtonContainer: {
-    margin: 10,
-  },
-  youButtonContainer: {
-    margin: 10,
-  },
-  imageStyle: {
-    height: 20,
-    width: 20,
-    marginLeft: 20,
-    marginRight: 20,
   },
   imageStyleUser: {
     width: 50,
@@ -177,7 +143,8 @@ const style = StyleSheet.create({
     margin: 20,
   },
   postContainer: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    marginBottom: 5,
   },
   postTextContainer: {
     alignItems: 'center',

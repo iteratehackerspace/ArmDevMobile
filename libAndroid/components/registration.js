@@ -49,7 +49,7 @@ class Registration extends Component {
           <TouchableOpacity 
             style={style.headerTextContainer}
             onPress={() => {
-              this._navigate('toFeed');
+              this._navigate('toFootBar');
               this.cleanAll();
             }}>
           <Text style={style.headerText}>Done</Text>
@@ -80,7 +80,7 @@ class Registration extends Component {
             onPress={() => {
               this.sendSigning();
               this.cleanAll();
-              this._navigate('toFeed');
+              this._navigate('toFootBar');
             }}>
             <Text style={style.headerText}>Done</Text>
           </TouchableOpacity>
@@ -103,9 +103,9 @@ class Registration extends Component {
           onPasswordChange: (data) => this.onPasswordChange(data),
         },
       });
-    }else if(propName === 'toFeed'){
+    }else if(propName === 'toFootBar'){
         this.props.navigator.push({
-          name: 'Feed',
+          name: 'FootBar',
           passProps: {
           },
         });
