@@ -21,6 +21,8 @@ class Registration extends Component {
           <TextInput 
             onChangeText={this.props.onFirstNameChange} 
             style={style.textInputStyle}
+            underlineColorAndroid='black'
+            autoFocus={true}
           />
         </View>
         <View style={style.smallContainer}>
@@ -28,6 +30,7 @@ class Registration extends Component {
           <TextInput 
             onChangeText={this.props.onLastNameChange} 
             style={style.textInputStyle}
+            underlineColorAndroid='black'
           />
         </View>
         <View style={style.smallContainer}>
@@ -35,6 +38,7 @@ class Registration extends Component {
           <TextInput 
             onChangeText={this.props.onUserNameChange} 
             style={style.textInputStyle}
+            underlineColorAndroid='black'
           />
         </View>
         <View style={style.smallContainer}>
@@ -42,6 +46,7 @@ class Registration extends Component {
           <TextInput 
             onChangeText={this.props.onEmailChange} 
             style={style.textInputStyle}
+            underlineColorAndroid='black'
           />
         </View>
         <View style={style.smallContainer}>
@@ -49,6 +54,7 @@ class Registration extends Component {
           <TextInput 
             onChangeText={this.props.onPasswordChange} 
             style={style.textInputStyle}
+            underlineColorAndroid='black'
           />
         </View>
       </View>

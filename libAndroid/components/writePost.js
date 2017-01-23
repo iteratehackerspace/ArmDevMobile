@@ -15,7 +15,17 @@ export default class WritePost extends Component {
   render(){
     return(
       <View style={style.container}>
-        <Text>Write post here</Text>
+        <TextInput 
+          onChangeText={(text) => {
+            const hey = text.split();
+            console.log(hey);
+          }}
+          style={{
+            height: height * 0.8,
+          }}
+          underlineColorAndroid='white'
+          multiline={true}
+          autoFocus={true}/>
       </View>
     );
   }
