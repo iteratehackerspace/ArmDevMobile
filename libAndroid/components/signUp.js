@@ -57,6 +57,12 @@ class Registration extends Component {
             underlineColorAndroid='black'
           />
         </View>
+        <View style={this.props.unameAvailable}>
+          <Text></Text>
+        </View>
+        <View style={this.props.wrongCredentials ? {opacity:1} : {opacity:0}}>
+          <Text style={{color:'red'}}>Sorry, but fields are not filled correctly</Text>
+        </View>
       </View>
     );
   }

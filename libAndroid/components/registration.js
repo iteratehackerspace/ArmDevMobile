@@ -23,15 +23,39 @@ class Registration extends Component {
       email: '',
       userName: '',
       password: '',
-      unameAvailable: false
+      unameAvailable: false,
+      wrongCredentials: false,
     }
   }
-  onFirstNameChange(firstName){this.setState({firstName})}
-  onLastNameChange(lastName){this.setState({lastName})}
-  onEmailChange(email){this.setState({email})}
-  onUserNameChange(userName){this.setState({userName})}
-  onPasswordChange(password){this.setState({password})}
-  onEmailOrUsernameChange(emailOrUsername){this.setState({emailOrUsername})}
+  onFirstNameChange(firstName){
+    this.setState({firstName})
+  }
+  onLastNameChange(lastName){
+    this.setState({lastName})
+  }
+  onEmailChange(email){
+    const regExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const tested = regExp.test(email);
+    if(tested){
+      this.setState({email});
+    }else{
+      this.setState({email: ''});
+    }
+  }
+  async onUserNameChange(userName){
+    const checked = await this.checkUname(this.state.userName);
+    if(checked){
+      this.setState({unameAvailable: true});
+    }else{
+    }
+    this.setState({userName})
+  }
+  onPasswordChange(password){
+    this.setState({password})
+  }
+  onEmailOrUsernameChange(emailOrUsername){
+    this.setState({emailOrUsername})
+  }
   cleanAll(){
     this.setState({
       firstName: '',
@@ -40,6 +64,8 @@ class Registration extends Component {
       userName: '',
       password: '',
       emailOrUsername: '',
+      wrongCredentials: false,
+      unameAvailable: false,
     })
   }
   async checkUname(text){
@@ -53,7 +79,7 @@ class Registration extends Component {
         uname: text,
       }),
     };
-    const fetched = await fetch('http://10.15.2.174:8080/uname_check', unameFetchOptions);
+    const fetched = await fetch('http://192.168.1.212:8080/uname_check', unameFetchOptions);
     const jsoned = await fetched.json();
     return jsoned.unameAvailable;
   }
@@ -94,13 +120,11 @@ class Registration extends Component {
           <TouchableOpacity 
             style={style.headerTextContainer}
             onPress={async () => {
-              this.cleanAll();
-              this._navigate('toFootBar');
-              const checked = await this.checkUname(this.state.userName);
-              if(checked){
-                await this.sendSigning();
-              }else{
-                //handle error
+              const everythingOK = await this.sendSigning();
+              console.log(this.state.wrongCredentials);
+              if(everythingOK){
+                this.cleanAll();
+                this._navigate('toFootBar');
               }
             }}>
             <Text style={style.headerText}>Done</Text>
@@ -122,6 +146,7 @@ class Registration extends Component {
           onEmailChange: (data) => this.onEmailChange(data),
           onUserNameChange: (data) => this.onUserNameChange(data),
           onPasswordChange: (data) => this.onPasswordChange(data),
+          wrongCredentials: this.state.wrongCredentials
         },
       });
     }else if(propName === 'toFootBar'){
@@ -132,27 +157,42 @@ class Registration extends Component {
         });
     }
   }
-  sendSigning(
-    firstName,
-    lastName,
-    email,
-    userName,
-    password,
-  ){
-    const request_options = {
-      method: 'post',
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }),
-      body:JSON.stringify({
-        fullName : this.state.firstName + " " + this.state.lastName,
-        email : this.state.email,
-        uname: this.state.userName,
-        password: this.state.password
-      })
-    };
-    fetch('http://10.15.2.174:8080/user_registration', request_options);
+  sendSigning(){
+    const {
+      firstName, 
+      lastName, 
+      email, 
+      userName, 
+      password, 
+      unameAvailable 
+    } = this.state;
+    if(
+      firstName.trim() &&
+      lastName.trim() &&
+      email.trim() &&
+      userName.trim().length > 5 &&
+      password.trim().length > 6 &&
+      unameAvailable
+    ){
+      const request_options = {
+        method: 'post',
+        headers: new Headers({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }),
+        body:JSON.stringify({
+          fullName : firstName + " " + lastName,
+          email : email,
+          uname: userName,
+          password: password
+        })
+      };
+      fetch('http://192.168.1.212:8080/user_registration', request_options);
+      return 1;
+    }else{
+      this.setState({wrongCredentials: true});
+      return 0;
+    }
   }
   openGitLink() {
     const url = 'https://github.com/iteratehackerspace/ArmDevMobile';
