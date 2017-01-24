@@ -9,7 +9,6 @@ import { addPost } from '../actions/ArmDevMobileActions'
 const reducer = combineReducers(reducers);
 export const reduxStore = createStore(reducer);
 
-reduxStore.subscribe(()=>console.log(reduxStore.getState()));
 
 export default class App extends Component {
   render() {

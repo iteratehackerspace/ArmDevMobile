@@ -23,6 +23,7 @@ class Registration extends Component {
       email: '',
       userName: '',
       password: '',
+      unameAvailable: false
     }
   }
   onFirstNameChange(firstName){this.setState({firstName})}
@@ -40,6 +41,21 @@ class Registration extends Component {
       password: '',
       emailOrUsername: '',
     })
+  }
+  async checkUname(text){
+    const unameFetchOptions = {
+      method: 'post',
+      headers: new Headers({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }),
+      body:JSON.stringify({
+        uname: text,
+      }),
+    };
+    const fetched = await fetch('http://10.15.2.174:8080/uname_check', unameFetchOptions);
+    const jsoned = await fetched.json();
+    return jsoned.unameAvailable;
   }
   _navigate(propName, name) {
     if(propName === 'toSignIn'){
@@ -77,10 +93,15 @@ class Registration extends Component {
         rightButton: (
           <TouchableOpacity 
             style={style.headerTextContainer}
-            onPress={() => {
-              this.sendSigning();
+            onPress={async () => {
               this.cleanAll();
               this._navigate('toFootBar');
+              const checked = await this.checkUname(this.state.userName);
+              if(checked){
+                await this.sendSigning();
+              }else{
+                //handle error
+              }
             }}>
             <Text style={style.headerText}>Done</Text>
           </TouchableOpacity>
@@ -117,8 +138,6 @@ class Registration extends Component {
     email,
     userName,
     password,
-    emailOrUsername,
-    scene
   ){
     const request_options = {
       method: 'post',
@@ -127,16 +146,13 @@ class Registration extends Component {
         'Content-Type': 'application/json',
       }),
       body:JSON.stringify({
-        firstName,
-        lastName,
-        email,
-        userName,
-        password,
-        emailOrUsername,
-        scene
-      }),
+        fullName : this.state.firstName + " " + this.state.lastName,
+        email : this.state.email,
+        uname: this.state.userName,
+        password: this.state.password
+      })
     };
-    fetch('http://localhost:8080/user_registration', request_options);
+    fetch('http://10.15.2.174:8080/user_registration', request_options);
   }
   openGitLink() {
     const url = 'https://github.com/iteratehackerspace/ArmDevMobile';

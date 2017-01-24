@@ -87,7 +87,6 @@ let NavigationBarRouteMapper = {
     );
   },
   Title(route, navigator, index, navState) {
-    console.log(route);
     return(
       <Text></Text>
     );
