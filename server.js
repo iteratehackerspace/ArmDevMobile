@@ -10,7 +10,6 @@ const db_url = 'mongodb://localhost:27017/ArmDev';
 const body_parser = require('body-parser');
 const json_parser = body_parser.json();
 const form_parser = body_parser.urlencoded({extended: true});
-const nodemailer = require('nodemailer');
 http.listen(8080);
 
 app.get('/', (req, res)=>{

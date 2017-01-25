@@ -47,6 +47,7 @@ class Registration extends Component {
             onChangeText={this.props.onEmailChange} 
             style={style.textInputStyle}
             underlineColorAndroid='black'
+            keyboardType='email-address'
           />
         </View>
         <View style={style.smallContainer}>

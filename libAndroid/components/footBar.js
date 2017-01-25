@@ -8,18 +8,12 @@ import {
   Image,
   Dimensions,
 } from 'react-native'
-import Tabbar from 'react-native-tabbar'
 import Feed from './feed';
 import You from './you';
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 const { width, height } = Dimensions.get('window');
 export default class FootBar extends Component {
-  constructor(props, context) {
-    super(props, context)
-    this.tabarRef = null
-    this.state = {
-      tab: 'Feed'
-    }
-  }
+  
   _navigate(propName, name) {
     if(propName === 'toWritePost'){
       this.props.navigator.push({
@@ -47,76 +41,32 @@ export default class FootBar extends Component {
       });
     }
   }
-  onTabSelect(tab) {
-    this.setState({ tab })
-  }
-
-  renderTabs() {
-    return (
-      <View style={{
-        flexDirection: 'row',
-      }}>
-        <TouchableOpacity 
-          style={style.feedButtonContainer}
-          onPress={() => this.onTabSelect('Feed')}>
-          <Image
-            style={style.imageStyle}
-            source={require('../assets/feedButton.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={style.youButtonContainer}
-          onPress={() => this._navigate('toWritePost')}>
-          <Image
-            style={style.imageStyle}
-            source={require('../assets/writePost.png')}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={style.youButtonContainer}
-          onPress={() => this.onTabSelect('You')}>
-          <Image
-            style={style.imageStyle}
-            source={require('../assets/youButton.png')}
-          />
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  renderContent() {
-    const { tab } = this.state
-    let content
-    switch(tab) {
-      case 'Feed':
-        content = <Feed navigator={this.props.navigator}/>
-        break
-      case 'You':
-        content = <You navigator={this.props.navigator}/>
-        break
-    }
-    return content
-  }
-
   render() {
     return (
       <View style={style.container}>
-          <View>
-            {this.renderContent()}
-          </View>
-        <Tabbar show={true}
-                disable={false}
-                ref={(ref) => this.tabarRef = ref}
-                style={{ 
-                  backgroundColor: '#bf0e0e',
-                }}>
-          {this.renderTabs()}
-        </Tabbar>
+        <ScrollableTabView
+          style={{marginTop: 20}}
+          initialPage={0}
+          renderTabBar={() => <ScrollableTabBar/>}
+          tabBarActiveTextColor='#bf0e0e'
+          tabBarUnderlineStyle={{backgroundColor: '#bf0e0e'}}
+        >
+           <Feed tabLabel="Feed" navigator={this.props.navigator}/>
+           <You tabLabel="You" navigator={this.props.navigator} />
+         </ScrollableTabView>
       </View>
     );
   }
 }
 
+    // <Image
+    //   style={style.imageStyle}
+    //   source={require('../assets/writePost.png')}
+    // />
+    // <Image
+    //   style={style.imageStyle}
+    //   source={require('../assets/youButton.png')}
+    // />
 const style = StyleSheet.create({
   container: {
     flex: 1,
