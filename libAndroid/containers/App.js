@@ -22,7 +22,7 @@ export default class App extends Component {
 //Test data
 const post = {
   id: 123,
-  title: ' id quod m ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat',
+  title: 'maiores alias consequatur aut perferendis doloribus asperiores repellat',
   likes: 12332,
   tags: [
     'programming', 

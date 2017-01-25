@@ -10,11 +10,14 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-
+import { reduxStore } from '../containers/App';
 const { width, height } = Dimensions.get('window');
-
+let store;
 export default
 class Feed extends Component {
+  componentWillMount() {
+    store = reduxStore.getState().armDevMobile;
+  }
   _navigate(propName, name) {
     if(propName === 'toPost'){
       this.props.navigator.push({
@@ -38,14 +41,48 @@ class Feed extends Component {
     }
   }
   render(){
+    const renderPosts = store.map((post, idx) => {
+      return(
+        <View key={idx} style={style.postStyle}>
+          <View style={{margin: 15}}>
+            <View>
+              <Text style={{fontSize: 20, fontWeight: '900', color: 'black'}}>
+                {store[idx].post.title}
+              </Text>
+            </View>
+            <View style={style.authorContainer}>
+              <Image
+                style={style.imageStyle}
+                source={require('../assets/trump.jpg')}
+              />
+              <View>
+                <View style={style.authorTextContainer}>
+                  <Text style={style.authorText}>{store[idx].post.author.fullName}</Text>
+                </View>
+                <View style={style.authorDateContainer}>
+                  <Text>{store[idx].post.time}</Text>
+                </View>
+              </View>
+            </View>
+            <View>
+              <Text style={{color: 'black'}}>
+                {store[idx].post.text.substr(0, 140)}...
+              </Text>
+              <Text style={{color: 'red'}}>
+                Read More
+              </Text>
+            </View>
+          </View>
+        </View>
+      )
+    })
     return(
         <ScrollView style={{backgroundColor: '#f0d6c9',height:height}}>
           <View style={style.container}>
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => this._navigate('toPost')}>
-              <View style={style.postStyle}>
-              </View>
+              {renderPosts}
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -59,7 +96,7 @@ const style = StyleSheet.create({
     marginTop: 0.05 * height,
   },
   postStyle: {
-    height: 0.3 * height,
+    height: 0.35 * height,
     width: width,
     backgroundColor: 'white',
     marginBottom: 5
@@ -71,5 +108,22 @@ const style = StyleSheet.create({
   headerText: {
     fontSize: 17,
     color: 'black',
+  },
+  imageStyle: {
+    width: 35,
+    height: 35,
+    borderRadius: 1000,
+  },
+  authorContainer: {
+    flexDirection: 'row',
+  },
+  authorTextContainer: {
+    marginLeft: 10
+  },
+  authorText: {
+    color: 'black',
+  },
+  authorDateContainer: {
+    marginLeft: 10,
   },
 });
