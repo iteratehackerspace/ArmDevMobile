@@ -20,26 +20,26 @@ class SignUp extends Component {
   constructor(){
     super();
     this.state = {
-      image: null,
+      image: {},
     };
   }
   addPhotoGallery(){
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
+      width: 200,
+      height: 200,
       cropping: true
     }).then(image => {
-      this.setState({image});
+      this.setState({image: {uri: image.path}})
       this.props.onImageChange(image);
     });
   }
   addPhotoCamera(){
     ImagePicker.openCamera({
-      width: 300,
-      height: 400,
+      width: 200,
+      height: 200,
       cropping: true
     }).then(image => {
-      this.setState({image})
+      this.setState({image: {uri: image.path}})
       this.props.onImageChange(image);
     });
   }
@@ -87,10 +87,16 @@ class SignUp extends Component {
             underlineColorAndroid='black'
           />
         </View>
-        <Image
-          style={{width: 50,height: 50,borderRadius: 1000}}
-          source={this.state.image ? require(`${this.state.image}`) : null}
-        />
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Image
+            style={{
+              width: width * 0.7,
+              height: width * 0.7,
+              borderRadius: 1000
+            }}
+            source={this.state.image ? this.state.image : null}
+          />
+        </View>
         <Button 
           title='Add photo from gallery'
           onPress={() => this.addPhotoGallery()}
