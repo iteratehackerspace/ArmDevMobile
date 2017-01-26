@@ -23,9 +23,13 @@ class Registration extends Component {
       email: '',
       userName: '',
       password: '',
+      image: '',
       unameAvailable: false,
       wrongCredentials: false,
     }
+  }
+  onImageChange(image){
+    this.setState({image})
   }
   onFirstNameChange(firstName){
     this.setState({firstName})
@@ -146,6 +150,7 @@ class Registration extends Component {
           onEmailChange: (data) => this.onEmailChange(data),
           onUserNameChange: (data) => this.onUserNameChange(data),
           onPasswordChange: (data) => this.onPasswordChange(data),
+          onImageChange: (data) => this.onImageChange(data),
           wrongCredentials: this.state.wrongCredentials
         },
       });

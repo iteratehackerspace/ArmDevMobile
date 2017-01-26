@@ -6,23 +6,52 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  ScrollView,
+  Image
 } from 'react-native';
+
+import ImagePicker from 'react-native-image-crop-picker';
 
 const { width, height } = Dimensions.get('window');
 
 export default
-class Registration extends Component {
+class SignUp extends Component {
+  constructor(){
+    super();
+    this.state = {
+      image: null,
+    };
+  }
+  addPhotoGallery(){
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      this.setState({image});
+      this.props.onImageChange(image);
+    });
+  }
+  addPhotoCamera(){
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      this.setState({image})
+      this.props.onImageChange(image);
+    });
+  }
   render(){
     return(
-      <View style={style.container}>
+      <ScrollView style={style.container}>
         <View style={style.smallContainer}>
           <Text style={style.textStyle}>First Name:</Text>
           <TextInput 
             onChangeText={this.props.onFirstNameChange} 
             style={style.textInputStyle}
             underlineColorAndroid='black'
-            autoFocus={true}
           />
         </View>
         <View style={style.smallContainer}>
@@ -58,13 +87,25 @@ class Registration extends Component {
             underlineColorAndroid='black'
           />
         </View>
+        <Image
+          style={{width: 50,height: 50,borderRadius: 1000}}
+          source={this.state.image ? require(`${this.state.image}`) : null}
+        />
+        <Button 
+          title='Add photo from gallery'
+          onPress={() => this.addPhotoGallery()}
+        />
+        <Button 
+          title='Add photo from camera'
+          onPress={() => this.addPhotoCamera()}
+        />
         <View style={this.props.unameAvailable}>
           <Text></Text>
         </View>
         <View style={this.props.wrongCredentials ? {opacity:1} : {opacity:0}}>
           <Text style={{color:'red'}}>Sorry, but fields are not filled correctly</Text>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
