@@ -52,3 +52,5 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 DBdata
+testData
+server.js

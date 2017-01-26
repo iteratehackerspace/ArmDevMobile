@@ -11,6 +11,9 @@ const armDevMobile = (state = [], action) => {
         }
       ];
       break;
+    case types.ADD_FEED:
+      return action.feed.posts.posts;
+      break;
     default:
       return state;
       break;

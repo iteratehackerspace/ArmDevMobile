@@ -26,10 +26,10 @@ class Post extends Component {
     store = reduxStore.getState().armDevMobile;
   }
   render(){
-    const getTags = store[0].post.tags.map((tag, idx) => {
+    const getTags = store[this.props.clickIndex].tags.map((tag, idx) => {
       return tag + '  ';
     });
-    const getComments = store[0].post.comments.map((comment, idx) => {
+    const getComments = store[this.props.clickIndex].comments.map((comment, idx) => {
       return(
         <View key={idx} style={style.commentContainer}>
           <Image
@@ -55,7 +55,7 @@ class Post extends Component {
         <ScrollView>
           <View style={style.postContainer}>
             <View style={style.titleContainer}>
-              <Text style={style.title}>{store[0].post.title}</Text>
+              <Text style={style.title}>{store[this.props.clickIndex].title}</Text>
             </View>
             <View style={style.tagContainer}>
               <Text style={style.tag}>
@@ -69,15 +69,15 @@ class Post extends Component {
               />
               <View>
                 <View style={style.authorTextContainer}>
-                  <Text style={style.authorText}>{store[0].post.author.fullName}</Text>
+                  <Text style={style.authorText}>{store[this.props.clickIndex].author.fullName}</Text>
                 </View>
                 <View style={style.authorDateContainer}>
-                  <Text>{store[0].post.time}</Text>
+                  <Text>{store[this.props.clickIndex].time}</Text>
                 </View>
               </View>
             </View>
             <View style={style.postTextContainer}>
-              <Text style={style.postText}>{store[0].post.text}</Text>
+              <Text style={style.postText}>{store[this.props.clickIndex].text}</Text>
             </View>
           </View>
           <View style={style.aboutTheAuthorTextContainer}>
@@ -90,10 +90,10 @@ class Post extends Component {
             />
             <View>
               <View style={style.authorTextContainer}>
-                <Text style={style.authorText}>{store[0].post.author.fullName}</Text>
+                <Text style={style.authorText}>{store[this.props.clickIndex].author.fullName}</Text>
               </View>
               <View style={style.authorDescriptionContainer}>
-                <Text style={style.authorDescription}>{store[0].post.author.ShortDescription}</Text>
+                <Text style={style.authorDescription}>{store[this.props.clickIndex].author.ShortDescription}</Text>
               </View>
             </View>
           </View>
@@ -108,15 +108,15 @@ class Post extends Component {
               style={this.state.liked ? style.likesContainerUnLike : style.likesContainerLike}
               activeOpacity={1}
               onPress={() => this.setState({liked: this.state.liked ? false : true}) }>
-              <Text style={this.state.liked ? style.likesUnLike : style.likesLike}>{this.state.liked ? `UnLike` : `Like`}|{store[0].post.likes}</Text>
+              <Text style={this.state.liked ? style.likesUnLike : style.likesLike}>{this.state.liked ? `UnLike` : `Like`}|{store[this.props.clickIndex].likes}</Text>
             </TouchableOpacity>
             <View 
               style={style.commentsContainer}>
-              <Text style={style.comments}>Seen|{store[0].post.seen}</Text>
+              <Text style={style.comments}>Seen|{store[this.props.clickIndex].seen}</Text>
             </View>
             <View 
               style={style.commentsContainer}>
-              <Text style={style.comments}>Comments|{store[0].post.comments.length}</Text>
+              <Text style={style.comments}>Comments|{store[this.props.clickIndex].comments.length}</Text>
             </View>
           </View>
           <TouchableOpacity 

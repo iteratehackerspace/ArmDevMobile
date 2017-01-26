@@ -1,4 +1,3 @@
-
 'use strict'
 
 const express = require('express');
@@ -15,25 +14,8 @@ http.listen(8080);
 app.get('/', (req, res)=>{
   res.sendFile(__dirname + '/build/index.html');
 });
-/*
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-      user: '',
-      pass: ''
-  }
-});
-const mailOptions = {
-  from: '"ArmDev" <>',
-  to: '',
-  subject: 'Welcome',
-  text: 'Welcome to ArmDev blog',
-  html: '<b>Welcome to ArmDev blog!</b>'
-};
-*/ // nodemailer
 app.post('/user_registration', json_parser, form_parser, (req, res) => {
   const userData = req.body;
-  //mailOptions.to = userData.email; // nodemailer
   console.log(userData);
   MongoClient.connect(db_url, (err, db)=>{
     if (err){
@@ -46,14 +28,6 @@ app.post('/user_registration', json_parser, form_parser, (req, res) => {
             console.log("Could not insert in the DB: " + err);
           } else {
             console.log("Successfully added the new user to the DB.");
-            /*
-            transporter.sendMail(mailOptions, (error, info) {
-              if (error) {
-                return console.log(error);
-              }
-              console.log('Message %s sent: %s', info.messageId, info.response);
-            });
-            */ // nodemailer
           }
           db.close();
         });
@@ -110,4 +84,7 @@ app.post('/user_login', json_parser, form_parser, (req, res) => {
     }
   });
 });
-app.use(express.static('build'));
+const posts = require("./testData/postsForFeed.js");
+app.get('/get_feed', (req, res) => {
+  res.status(200).send(JSON.stringify({posts}));
+})

@@ -15,6 +15,12 @@ const { width, height } = Dimensions.get('window');
 let store;
 export default
 class Feed extends Component {
+  constructor(){
+    super();
+    this.state = {
+      clickIndex: 0,
+    };
+  }
   componentWillMount() {
     store = reduxStore.getState().armDevMobile;
   }
@@ -30,6 +36,7 @@ class Feed extends Component {
           </TouchableOpacity>
         ),
         passProps: {
+          clickIndex: this.state.clickIndex,
         },
       });
     }else if(propName === 'toYou'){
@@ -43,47 +50,49 @@ class Feed extends Component {
   render(){
     const renderPosts = store.map((post, idx) => {
       return(
-        <View key={idx} style={style.postStyle}>
-          <View style={{margin: 15}}>
-            <View>
-              <Text style={{fontSize: 20, fontWeight: '900', color: 'black'}}>
-                {store[idx].post.title}
-              </Text>
-            </View>
-            <View style={style.authorContainer}>
-              <Image
-                style={style.imageStyle}
-                source={require('../assets/trump.jpg')}
-              />
-              <View>
-                <View style={style.authorTextContainer}>
-                  <Text style={style.authorText}>{store[idx].post.author.fullName}</Text>
-                </View>
-                <View style={style.authorDateContainer}>
-                  <Text>{store[idx].post.time}</Text>
+        <TouchableOpacity
+          key={idx}
+          activeOpacity={0.9}
+          onPressIn={() => this.setState({clickIndex: idx})}
+          onPressOut={() => this._navigate('toPost')}>
+          <View style={style.postStyle}>
+            <View style={{margin: 15}}>
+              <View style={{alignItems: 'center'}}>
+                <Text style={{fontSize: 20, fontWeight: '900', color: 'black'}}>
+                  {post.title}
+                </Text>
+              </View>
+              <View style={style.authorContainer}>
+                <Image
+                  style={style.imageStyle}
+                  source={require('../assets/trump.jpg')}
+                />
+                <View>
+                  <View style={style.authorTextContainer}>
+                    <Text style={style.authorText}>{post.author.fullName}</Text>
+                  </View>
+                  <View style={style.authorDateContainer}>
+                    <Text>{post.time}</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-            <View>
-              <Text style={{color: 'black'}}>
-                {store[idx].post.text.substr(0, 140)}...
-              </Text>
-              <Text style={{color: 'red'}}>
-                Read More
-              </Text>
+              <View>
+                <Text style={{color: 'black'}}>
+                  {post.text.substr(0, 140)}...
+                </Text>
+                <Text style={{color: 'red'}}>
+                  Read More
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       )
     })
     return(
         <ScrollView style={{backgroundColor: '#f0d6c9',height:height}}>
           <View style={style.container}>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={() => this._navigate('toPost')}>
               {renderPosts}
-            </TouchableOpacity>
           </View>
         </ScrollView>
     );

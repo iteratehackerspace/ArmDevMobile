@@ -27,7 +27,7 @@ class You extends Component {
           style={style.postContainer}>
           <View
             style={style.postTextContainer}>
-            <Text style={style.postText}>{post.post.title}</Text>
+            <Text style={style.postText}>{post.title}</Text>
           </View>
         </View>
       );
@@ -44,11 +44,11 @@ class You extends Component {
               <View style={style.nameAndDesc}>
                 <Text 
                   style={style.userName}>
-                  {store[0].post.author.fullName}
+                  {store[0].author.fullName}
                 </Text>
                 <Text
                   style={style.shortDescription}>
-                  {store[0].post.author.ShortDescription}
+                  {store[0].author.ShortDescription}
                 </Text>
               </View>
             </View>
@@ -62,7 +62,7 @@ class You extends Component {
             <Text style={style.aboutTheAuthorText}>About the author</Text>
           </View>
           <View style={style.bigDescriptionContainer}>
-            <Text style={style.bigDescription}>{store[0].post.author.bigDescription}</Text>
+            <Text style={style.bigDescription}>{store[0].author.bigDescription}</Text>
           </View>
           <View style={style.aboutTheAuthorTextContainer}>
             <Text style={style.aboutTheAuthorText}>Posts</Text>

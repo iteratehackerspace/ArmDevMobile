@@ -6,3 +6,7 @@ export const addPost = (post) => ({
   id: nextPostId++,
   post
 })
+export const addFeed = (feed) => ({
+  type: types.ADD_FEED,
+  feed
+})

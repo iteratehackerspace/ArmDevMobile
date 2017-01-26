@@ -125,7 +125,6 @@ class Registration extends Component {
             style={style.headerTextContainer}
             onPress={async () => {
               const everythingOK = await this.sendSigning();
-              console.log(this.state.wrongCredentials);
               if(everythingOK){
                 this.cleanAll();
                 this._navigate('toFootBar');
