@@ -79,7 +79,7 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0d6c9',
-    marginTop: 0.05 * height,
+    marginTop: 5,
   },
   imageStyleUser: {
     width: 50,

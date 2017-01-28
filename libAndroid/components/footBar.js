@@ -10,36 +10,12 @@ import {
 } from 'react-native'
 import Feed from './feed';
 import You from './you';
+import ForumSelector from './forumSelector';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 const { width, height } = Dimensions.get('window');
 export default class FootBar extends Component {
   
   _navigate(propName, name) {
-    if(propName === 'toWritePost'){
-      this.props.navigator.push({
-        name: 'WritePost',
-        rightButton: (
-          <TouchableOpacity 
-            style={style.headerTextContainer}
-            onPress={() => {
-              this.props.navigator.pop();
-            }}>
-            <Text style={style.headerText}>Post</Text>
-          </TouchableOpacity>
-        ),
-        leftButton: (
-          <TouchableOpacity 
-            style={style.headerTextContainer}
-            onPress={() => {
-              this.props.navigator.pop();
-            }}>
-            <Text style={style.headerText}>Close</Text>
-          </TouchableOpacity>
-        ),
-        passProps: {
-        },
-      });
-    }
   }
   render() {
     return (
@@ -53,20 +29,12 @@ export default class FootBar extends Component {
         >
            <Feed tabLabel="Feed" navigator={this.props.navigator}/>
            <You tabLabel="You" navigator={this.props.navigator} />
+           <ForumSelector tabLabel="Forum" navigator={this.props.navigator} />
          </ScrollableTabView>
       </View>
     );
   }
 }
-
-    // <Image
-    //   style={style.imageStyle}
-    //   source={require('../assets/writePost.png')}
-    // />
-    // <Image
-    //   style={style.imageStyle}
-    //   source={require('../assets/youButton.png')}
-    // />
 const style = StyleSheet.create({
   container: {
     flex: 1,

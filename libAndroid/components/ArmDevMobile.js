@@ -13,7 +13,7 @@ import Feed from './feed';
 import Post from './post';
 import You from './you';
 import FootBar from './footBar';
-import WritePost from './writePost';
+import ForumPage from './forumPage';
 export default 
 class ArmDevMobile extends Component {
   renderScene(route, navigator) {
@@ -27,29 +27,23 @@ class ArmDevMobile extends Component {
       case 'SignUp':
         return <SignUp navigator={navigator} {...route.passProps} />;
         break;
-      case 'Feed':
-        return <Feed  navigator={navigator} {...route.passProps} />;
-        break;
       case 'Post':
         return <Post navigator={navigator} {...route.passProps} />;
-        break;
-      case 'You':
-        return <You navigator={navigator} {...route.passProps} />;
         break;
       case 'FootBar':
         return <FootBar navigator={navigator} {...route.passProps} />;
         break;
-      case 'WritePost':
-        return <WritePost navigator={navigator} {...route.passProps} />;
+      case 'ForumPage':
+        return <ForumPage navigator={navigator} {...route.passProps} />;
         break;
     }
   }
   configureScene(route, routeStack){
     switch (route.name) {
       case 'Post':
-        return Navigator.SceneConfigs.FadeAndroid
+        return Navigator.SceneConfigs.FadeAndroid;
         break;
-      case 'WritePost':
+      case 'ForumPage':
         return Navigator.SceneConfigs.FloatFromBottom;
         break;
       default:

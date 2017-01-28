@@ -22,7 +22,6 @@ class SignIn extends Component {
             style={style.textInputStyle}
             onChangeText={this.props.onEmailOrUsernameChange} 
             underlineColorAndroid='black'
-            autoFocus={true}
           />
         </View>
         <View style={style.smallContainer}>

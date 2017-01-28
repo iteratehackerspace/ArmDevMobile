@@ -54,7 +54,7 @@ class Feed extends Component {
           key={idx}
           activeOpacity={0.9}
           onPressIn={() => this.setState({clickIndex: idx})}
-          onPressOut={() => this._navigate('toPost')}>
+          onPress={() => this._navigate('toPost')}>
           <View style={style.postStyle}>
             <View style={{margin: 15}}>
               <View style={{alignItems: 'center'}}>
@@ -102,7 +102,7 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0d6c9',
-    marginTop: 0.05 * height,
+    marginTop: 5,
   },
   postStyle: {
     height: 0.35 * height,
