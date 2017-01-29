@@ -35,6 +35,7 @@ class ForumSelector extends Component {
         ),
         passProps: {
           clickIndex: this.state.clickIndex,
+          title: name,
         },
       });
     }else if(propName === 'toYou'){
@@ -53,7 +54,7 @@ class ForumSelector extends Component {
           key={idx}
           activeOpacity={0.9}
           onPressIn={() => this.setState({clickIndex: idx})}
-          onPress={() => this._navigate('toForumPage')}
+          onPress={() => this._navigate('toForumPage', topic.title)}
         >
           <View>
             <Image
