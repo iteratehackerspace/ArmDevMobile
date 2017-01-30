@@ -10,12 +10,12 @@ const pureJSImage = require('./drawable/purejs.png');
 const reactJSImage = require('./drawable/reactjs.png');
 const swiftImage = require('./drawable/swift.png');
 const arrayOfForumImages = [
-  {title:'React JS',image:reactJSImage}, 
-  {title:'Android',image:androidImage}, 
-  {title:'Angular',image:angularImage}, 
-  {title:'IOS',image:appleImage}, 
-  {title:'C++',image:cppImage}, 
-  {title:'pure JS',image:pureJSImage}, 
-  {title:'Swift',image:swiftImage}
+  {title:'React JS',fetchTitle:'reactjs',image:reactJSImage}, 
+  {title:'Android',fetchTitle:'android',image:androidImage}, 
+  {title:'Angular',fetchTitle:'angular',image:angularImage}, 
+  {title:'IOS',fetchTitle:'ios',image:appleImage}, 
+  {title:'C++',fetchTitle:'cpp',image:cppImage}, 
+  {title:'pure JS',fetchTitle:'purejs',image:pureJSImage}, 
+  {title:'Swift',fetchTitle:'swift',image:swiftImage}
 ];
 module.exports = arrayOfForumImages;

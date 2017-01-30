@@ -19,7 +19,7 @@ class ForumSelector extends Component {
   constructor(){
     super();
     this.state = {
-      clickIndex: 0,
+      clickTitle: {},
     };
   }
   _navigate(propName, name) {
@@ -34,8 +34,8 @@ class ForumSelector extends Component {
           </TouchableOpacity>
         ),
         passProps: {
-          clickIndex: this.state.clickIndex,
-          title: name,
+          clickTitle: this.state.clickTitle,
+          topic: name,
         },
       });
     }else if(propName === 'toYou'){
@@ -53,8 +53,8 @@ class ForumSelector extends Component {
           style={{backgroundColor: 'white', marginBottom: 5, flexDirection: 'row'}} 
           key={idx}
           activeOpacity={0.9}
-          onPressIn={() => this.setState({clickIndex: idx})}
-          onPress={() => this._navigate('toForumPage', topic.title)}
+          onPressIn={() => this.setState({clickTitle: topic})}
+          onPress={() => this._navigate('toForumPage', this.state.clickTitle)}
         >
           <View>
             <Image
