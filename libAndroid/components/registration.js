@@ -8,9 +8,12 @@ import {
   StyleSheet,
   Dimensions,
   StatusBar,
-  Linking
+  Linking,
+  AsyncStorage,
+  Alert
 } from 'react-native';
-
+const STORAGE_KEY = 'id_token';
+const options = {};
 const { width, height } = Dimensions.get('window');
 
 export default
@@ -47,10 +50,11 @@ class Registration extends Component {
     }
   }
   async onUserNameChange(userName){
-    const checked = await this.checkUname(this.state.userName);
+    const checked = await this.checkUname(userName);
     if(checked){
       this.setState({unameAvailable: true});
     }else{
+      this.setState({unameAvailable: false});
     }
     this.setState({userName})
   }
@@ -93,23 +97,25 @@ class Registration extends Component {
         name: 'SignIn',
         rightButton: (
           <TouchableOpacity 
-            style={style.headerTextContainer}
-            onPress={() => {
-              this._navigate('toFootBar');
-              this.cleanAll();
+            style={{marginLeft: 10,marginRight: 10,}}
+            onPress={async () => {
+              const everythingOK = await this.sendLogin();
+              if(everythingOK){
+                this._navigate('toFootBar');
+                this.cleanAll();
+              }
             }}>
-          <Text style={style.headerText}>Done</Text>
+          <Text style={{fontSize: 17,color: 'black',}}>Done</Text>
           </TouchableOpacity>
         ),
         leftButton: (
           <TouchableOpacity 
-            style={style.headerTextContainer}
+            style={{marginLeft: 10,marginRight: 10,}}
             onPress={() => {
-              this.sendSigning();
               this.props.navigator.pop();
               this.cleanAll();
             }}>
-          <Text style={style.headerText}>X</Text>
+          <Text style={{fontSize: 17,color: 'black',}}>X</Text>
           </TouchableOpacity>
         ),
         passProps: {
@@ -122,7 +128,7 @@ class Registration extends Component {
         name: 'SignUp',
         rightButton: (
           <TouchableOpacity 
-            style={style.headerTextContainer}
+            style={{marginLeft: 10,marginRight: 10,}}
             onPress={async () => {
               const everythingOK = await this.sendSigning();
               if(everythingOK){
@@ -130,17 +136,17 @@ class Registration extends Component {
                 this._navigate('toFootBar');
               }
             }}>
-            <Text style={style.headerText}>Done</Text>
+            <Text style={{fontSize: 17,color: 'black',}}>Done</Text>
           </TouchableOpacity>
         ),
         leftButton: (
           <TouchableOpacity 
-            style={style.headerTextContainer}
+            style={{marginLeft: 10,marginRight: 10,}}
             onPress={() => {
               this.props.navigator.pop();
               this.cleanAll();
             }}>
-            <Text style={style.headerText}>X</Text>
+            <Text style={{fontSize: 17,color: 'black',}}>X</Text>
           </TouchableOpacity>
         ),
         passProps: {
@@ -161,7 +167,52 @@ class Registration extends Component {
         });
     }
   }
-  sendSigning(){
+  async _onValueChange(item, selectedValue) {
+    try {
+      await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }
+  }
+  async sendLogin(){
+    const {
+      emailOrUsername,
+      password
+    } = this.state;
+    if(
+      emailOrUsername.trim() &&
+      password.trim()
+    ){
+      const request_options = {
+        method: 'post',
+        headers: new Headers({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }),
+        body:JSON.stringify({
+          emailOrUsername,
+          password
+        })
+      };
+      try{
+        const fetched = await fetch('http://192.168.1.212:8080/user_login', request_options)
+        const jsoned = await fetched.json();
+        await this._onValueChange(STORAGE_KEY, jsoned.id_token);
+        Alert.alert(
+          "Login Success!",
+          "Hoorah!!"
+        )
+        return 1; 
+      }catch(e) {
+        console.log('err');
+        Alert.alert('Error', e);
+        return 0;
+      }
+    }else {
+      return 0;
+    }
+  }
+  async sendSigning(){
     const {
       firstName, 
       lastName, 
@@ -170,13 +221,17 @@ class Registration extends Component {
       password, 
       unameAvailable 
     } = this.state;
+    const checked = await this.checkUname(userName);
+    if(!unameAvailable || !checked){
+      Alert.alert('Oops!', 'this username is already registered');
+      return 0;
+    }
     if(
       firstName.trim() &&
       lastName.trim() &&
       email.trim() &&
       userName.trim().length > 5 &&
-      password.trim().length > 6 &&
-      unameAvailable
+      password.trim().length > 6
     ){
       const request_options = {
         method: 'post',
@@ -186,13 +241,25 @@ class Registration extends Component {
         }),
         body:JSON.stringify({
           fullName : firstName + " " + lastName,
-          email : email,
+          email,
           uname: userName,
-          password: password
+          password
         })
       };
-      fetch('http://192.168.1.212:8080/user_registration', request_options);
-      return 1;
+      try{
+        const fetched = await fetch('http://192.168.1.212:8080/user_registration', request_options)
+        const jsoned = await fetched.json();
+        await this._onValueChange(STORAGE_KEY, jsoned.id_token);
+        Alert.alert(
+          "Signup Success!",
+          "Hoorah!!"
+        )
+        return 1; 
+      }catch(e){
+        console.log('err');
+        Alert.alert('Error', e);
+        return 0;
+      }
     }else{
       this.setState({wrongCredentials: true});
       return 0;
@@ -207,31 +274,31 @@ class Registration extends Component {
     return(
       <View style={style.container}>
        <StatusBar backgroundColor="#bf0e0e" barStyle="light-content" />
-        <View style={style.smallContainer}>
-          <View style={style.titleContainer}>
-            <Text style={style.title}>ArmDev</Text>
+        <View style={{width: 0.8 * width,height: 0.6 * height}}>
+          <View style={{alignItems: 'center',marginBottom: 20}}>
+            <Text style={{fontSize: 30,color: '#bf0e0e'}}>ArmDev</Text>
           </View>
-          <View style={style.phraseContainer}>
-            <Text style={style.phrase}>The best community for Armenian developers</Text>
+          <View style={{alignItems: 'center'}}>
+            <Text style={{marginBottom: 20}}>The best community for Armenian developers</Text>
           </View>
-          <View style={style.button}>
+          <View style={{marginBottom: 10}}>
             <Button 
               title='Sign in'
               onPress={() => this._navigate('toSignIn')}
             />
           </View>
-          <View style={style.button}>
+          <View style={{marginBottom: 10}}>
             <Button 
               title='Sign up'
               onPress={() => this._navigate('toSignUp')}
             />
           </View>
-          <View style={style.openSourceContainer}>
-            <Text style={style.openSource}>Our project is fully open-source,</Text>
-            <Text style={style.openSource}>you can find it:</Text>
+          <View style={{alignItems: 'center'}}>
+            <Text style={{fontSize: 11,color: '#867770'}}>Our project is fully open-source,</Text>
+            <Text style={{fontSize: 11,color: '#867770'}}>you can find it:</Text>
             <TouchableOpacity 
               onPress={() => {this.openGitLink()}}>
-                <Text style={style.linkStyle}>
+                <Text style={{color: 'blue'}}>
                   HERE
                 </Text>
             </TouchableOpacity>
@@ -248,44 +315,5 @@ const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 0.05 * height,
-  },
-  titleContainer: {
-    alignItems: 'center',
-    marginBottom: 20
-  },
-  title: {
-    fontSize: 30,
-    color: '#bf0e0e'
-  },
-  smallContainer: {
-    width: 0.8 * width,
-    height: 0.6 * height
-  },
-  openSourceContainer: {
-    alignItems: 'center'
-  },
-  openSource: {
-    fontSize: 11,
-    color: '#867770'
-  },
-  phraseContainer: {
-    alignItems: 'center'
-  },
-  phrase: {
-    marginBottom: 20
-  },
-  button: {
-    marginBottom: 10
-  },
-  linkStyle: {
-    color: 'blue'
-  },
-  headerTextContainer: {
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  headerText: {
-    fontSize: 17,
-    color: 'black',
   },
 });

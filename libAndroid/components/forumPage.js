@@ -36,7 +36,7 @@ class ForumPage extends Component {
         fetchTitle: this.props.topic.fetchTitle,
       })
     };
-    fetch(`http://10.15.2.198:8080/getInfo`, request_options)
+    fetch(`http://192.168.1.212:8080/getInfo`, request_options)
       .then((res) => res.json())
       .then((res) => this.setState({messages: res.msgs, fetchedInfo: true}) );
     };
