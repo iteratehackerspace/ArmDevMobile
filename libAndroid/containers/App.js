@@ -19,7 +19,3 @@ export default class App extends Component {
     );
   }
 }
-//Test data
-fetch('http://192.168.1.212:8080/get_feed')
-  .then((res) => res.json())
-  .then((res) => reduxStore.dispatch(addFeed(res)));

@@ -25,7 +25,6 @@ class ForumPage extends Component {
     }
   }
   getInfo(){
-    console.log('hey');
     const request_options = {
       method: 'post',
       headers: new Headers({
@@ -36,7 +35,7 @@ class ForumPage extends Component {
         fetchTitle: this.props.topic.fetchTitle,
       })
     };
-    fetch(`http://192.168.1.212:8080/getInfo`, request_options)
+    fetch(`http://192.168.8.108:8080/protected/get_forum_messages`, request_options)
       .then((res) => res.json())
       .then((res) => this.setState({messages: res.msgs, fetchedInfo: true}) );
     };

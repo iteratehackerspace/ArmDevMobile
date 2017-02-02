@@ -15,7 +15,8 @@ import {
 const STORAGE_KEY = 'id_token';
 const options = {};
 const { width, height } = Dimensions.get('window');
-
+import { reduxStore } from '../containers/App';
+import { addPost, addFeed } from '../actions/ArmDevMobileActions'
 export default
 class Registration extends Component {
   constructor(){
@@ -87,11 +88,11 @@ class Registration extends Component {
         uname: text,
       }),
     };
-    const fetched = await fetch('http://192.168.1.212:8080/uname_check', unameFetchOptions);
+    const fetched = await fetch('http://192.168.8.108:8080/uname_check', unameFetchOptions);
     const jsoned = await fetched.json();
     return jsoned.unameAvailable;
   }
-  _navigate(propName, name) {
+  async _navigate(propName, name) {
     if(propName === 'toSignIn'){
       this.props.navigator.push({
         name: 'SignIn',
@@ -160,11 +161,25 @@ class Registration extends Component {
         },
       });
     }else if(propName === 'toFootBar'){
+      const DEMO_TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
+      fetch("http://192.168.8.108:8080/protected/get_feed", {
+        method: "GET",
+        headers: {
+          'Authorization': 'Bearer ' + DEMO_TOKEN
+        }
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        reduxStore.dispatch(addFeed(res))
+      })
+      .then(() => {
         this.props.navigator.push({
           name: 'FootBar',
           passProps: {
           },
         });
+      })
+      .catch((err) => Alert.alert('error', `${err}`));
     }
   }
   async _onValueChange(item, selectedValue) {
@@ -195,7 +210,7 @@ class Registration extends Component {
         })
       };
       try{
-        const fetched = await fetch('http://192.168.1.212:8080/user_login', request_options)
+        const fetched = await fetch('http://192.168.8.108:8080/user_login', request_options)
         const jsoned = await fetched.json();
         await this._onValueChange(STORAGE_KEY, jsoned.id_token);
         Alert.alert(
@@ -247,7 +262,7 @@ class Registration extends Component {
         })
       };
       try{
-        const fetched = await fetch('http://192.168.1.212:8080/user_registration', request_options)
+        const fetched = await fetch('http://192.168.8.108:8080/user_registration', request_options)
         const jsoned = await fetched.json();
         await this._onValueChange(STORAGE_KEY, jsoned.id_token);
         Alert.alert(

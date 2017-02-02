@@ -14,22 +14,19 @@ const jwt = require('jsonwebtoken');
 const express_jwt = require('express-jwt')
 const cors = require('cors');
 
-app.use(body_parser.urlencoded({ extended: true }));
-app.use(body_parser.json());
-app.use(cors());
-
-
-http.listen(8080, () => console.log('turned on 8080'));
-
-app.get('/', (req, res)=>{
-  res.sendFile(__dirname + '/build/index.html');
-});
 const config = {
   secret: "iterate",
 }
+let jwtCheck = express_jwt({
+  secret: config.secret
+});
+
+app.use('/protected', jwtCheck);
 const createToken = (user) => {
   return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60*60*24*180 });
 }
+http.listen(8080, () => console.log('server started on port 8080'));
+
 
 app.post('/user_registration', json_parser, form_parser, (req, res) => {
   let userData = req.body;
@@ -39,7 +36,9 @@ app.post('/user_registration', json_parser, form_parser, (req, res) => {
       console.log('Error connecting to the DB: ' + err);
     } else {
       console.log("Successfully connected to the DB.");
+        console.log('hey');
         const collection = db.collection('users');
+        console.log(userData);
         let len = await collection.count();
         userData.id = await len++;
         await collection.insert([userData], (err, result)=>{
@@ -88,18 +87,16 @@ app.post('/user_login', json_parser, form_parser, (req, res) => {
     } else {
         console.log("Successfully connected to the DB.");
         const collection = db.collection('users');
-        collection.find({uname: credentials.emailOrUsername}).toArray((err, results)=> {
+        collection.find({uname: credentials.emailOrUsername}).toArray((err, results)=> { //also need to check in Emails
           if (err){
             console.log(err);
           } else{
             if (results.length===0){
-              res.status(200).send(JSON.stringify({respond: -1})); //user not found
+              res.status(200).send(JSON.stringify({respond: 0})); //user not found
             } else{
                 if (credentials.password === results[0].password){
-                  res.status(200).send({
-                    id_token: createToken(credentials),
-                    respond: 1
-                  });
+                  console.log('user logged in');
+                  res.status(200).send(JSON.stringify({respond: 1, id_token: createToken(credentials)})); //successfully logged in
                 } else{
                     res.status(200).send(JSON.stringify({respond: 0})); //login failed
                 }
@@ -110,29 +107,11 @@ app.post('/user_login', json_parser, form_parser, (req, res) => {
   });
 });
 const posts = require("./testData/postsForFeed.js");
-app.get('/get_feed', (req, res) => {
+app.get('/protected/get_feed', (req, res) => {
   res.status(200).send(JSON.stringify({posts}));
 })
-const msgs = [
-  {
-    author: {
-      fullName: 'Bob Franklin'
-    },
-    time: '22/12/2010',
-    text: 'that was just great!',
-  },
-  {
-    author: {
-      fullName: 'Frank Boblin'
-    },
-    time: '25/12/2010',
-    text: 'that was just great! And I want to add that bla bla bla',
-  }
-];
-app.get('/get_feed', (req, res) => {
-  res.status(200).send(JSON.stringify({posts}));
-})
-app.post('/getInfo', json_parser, form_parser, (req, res) => {
+const msgs = require('./testData/forumMessages.js');
+app.post('/protected/get_forum_messages', json_parser, form_parser, (req, res) => {
   switch (req.body.fetchTitle) {
     case 'reactjs':
       res.status(200).send(JSON.stringify({msgs}));
@@ -142,15 +121,4 @@ app.post('/getInfo', json_parser, form_parser, (req, res) => {
       break;
     default:
   }
-});
-//SESSION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-let jwtCheck = express_jwt({
-  secret: config.secret
-});
-
-app.use('/api/protected', jwtCheck);
-
-app.get('/api/protected/random-quote', (req, res) => {
-  res.status(200).send('hello, it\'s me');
 });

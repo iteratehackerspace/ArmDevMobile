@@ -7,18 +7,21 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native'
 import Feed from './feed';
 import You from './you';
 import ForumSelector from './forumSelector';
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import {getFeed} from './registration';
+import { reduxStore } from '../containers/App';
 const { width, height } = Dimensions.get('window');
+let store;
 export default class FootBar extends Component {
-  
   _navigate(propName, name) {
   }
   render() {
-    return (
+      return (
       <View style={style.container}>
         <ScrollableTabView
           style={{marginTop: 20}}
@@ -27,8 +30,8 @@ export default class FootBar extends Component {
           tabBarActiveTextColor='#bf0e0e'
           tabBarUnderlineStyle={{backgroundColor: '#bf0e0e'}}
         >
-           <Feed tabLabel="Feed" navigator={this.props.navigator}/>
-           <You tabLabel="You" navigator={this.props.navigator} />
+           <Feed tabLabel="Feed" store={store} navigator={this.props.navigator}/>
+           <You tabLabel="You" store={store} navigator={this.props.navigator} />
            <ForumSelector tabLabel="Forum" navigator={this.props.navigator} />
          </ScrollableTabView>
       </View>
