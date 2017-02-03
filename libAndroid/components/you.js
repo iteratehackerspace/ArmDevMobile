@@ -24,10 +24,10 @@ class You extends Component {
       return(
         <View
           key={idx}
-          style={style.postContainer}>
+          style={{backgroundColor: 'white',marginBottom: 5}}>
           <View
-            style={style.postTextContainer}>
-            <Text style={style.postText}>{post.title}</Text>
+            style={{alignItems: 'center',margin: 20}}>
+            <Text style={{fontSize: 15,color: 'black'}}>{post.title}</Text>
           </View>
         </View>
       );
@@ -35,39 +35,42 @@ class You extends Component {
     return(
       <ScrollView style={{backgroundColor: '#f0d6c9',height: height}}>
         <View style={style.container}>
-          <View style={style.imageWithNameContainer}>
-            <View style={style.imageWithName}>
+          <View style={{backgroundColor: 'white'}}>
+            <View style={{margin: 15,flexDirection: 'row'}}>
               <Image
-                style={style.imageStyleUser}
+                style={{width: 50,height: 50,borderRadius: 1000,marginLeft: 10}}
                 source={require('../assets/trump.jpg')}
               />
-              <View style={style.nameAndDesc}>
+              <View style={{width: width * 0.7}}>
                 <Text 
-                  style={style.userName}>
+                  style={{marginTop: 10,marginLeft: 40,color: 'black',fontSize: 'bold',fontSize: 20}}>
                   {store[0].author.fullName}
                 </Text>
                 <Text
-                  style={style.shortDescription}>
+                  style={{marginTop: 2,marginLeft: 40,color: 'black',fontSize: '200',fontSize: 14}}>
                   {store[0].author.ShortDescription}
                 </Text>
               </View>
             </View>
-            <View style={style.followersBigContainer}>
-              <View style={style.followersContainer}>
-                <Text style={style.followers}>followers|123123</Text>
+            <View style={{flexDirection: 'row'}}>
+              <View style={{marginLeft: 25,marginBottom: 10,backgroundColor: '#DAA4E7',borderRadius: 7}}>
+                <Text style={{fontSize: 10,margin: 5}}>followers|123123</Text>
               </View>
             </View>
           </View>
-          <View style={style.aboutTheAuthorTextContainer}>
-            <Text style={style.aboutTheAuthorText}>About the author</Text>
+          <View style={{marginTop: 5,alignItems: 'center',backgroundColor: 'white'}}>
+            <Text style={{color: 'black',fontSize: 18}}>About the author</Text>
           </View>
-          <View style={style.bigDescriptionContainer}>
-            <Text style={style.bigDescription}>{store[0].author.bigDescription}</Text>
+          <View style={{marginTop: 5,backgroundColor: 'white'}}>
+            <Text style={{color: 'black',fontSize: 15,margin: 20}}>{store[0].author.bigDescription}</Text>
           </View>
-          <View style={style.aboutTheAuthorTextContainer}>
-            <Text style={style.aboutTheAuthorText}>Posts</Text>
+          <TouchableOpacity onPress={() => this.props._logout()} style={{marginTop: 5, backgroundColor: 'white', alignItems: 'center'}}>
+            <Text style={{color: 'red', margin: 15, fontSize: 22}}>Log out</Text>
+          </TouchableOpacity>
+          <View style={{marginTop: 5,alignItems: 'center',backgroundColor: 'white'}}>
+            <Text style={{color: 'black',fontSize: 18}}>Posts</Text>
           </View>
-          <View style={style.postsContainer}>
+          <View style={{marginTop: 5}}>
             {usersPosts}
           </View>
         </View>
@@ -79,82 +82,6 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0d6c9',
-    marginTop: 5,
-  },
-  imageStyleUser: {
-    width: 50,
-    height: 50,
-    borderRadius: 1000,
-    marginLeft: 10,
-  },
-  imageWithNameContainer: {
-    backgroundColor: 'white',
-  },
-  imageWithName: {
-    margin: 15,
-    flexDirection: 'row',
-  },
-  userName: {
-    marginTop: 10,
-    marginLeft: 40,
-    color: 'black',
-    fontSize: 'bold',
-    fontSize: 20,
-  },
-  shortDescription: {
-    marginTop: 2,
-    marginLeft: 40,
-    color: 'black',
-    fontSize: '200',
-    fontSize: 14,
-  },
-  nameAndDesc: {
-    width: width * 0.7,
-  },
-  followersBigContainer: {
-    flexDirection: 'row',
-  },
-  followersContainer: {
-    marginLeft: 25,
-    marginBottom: 10,
-    backgroundColor: '#DAA4E7',
-    borderRadius: 7,
-  },
-  followers: {
-    fontSize: 10,
-    margin: 5,
-  },
-  aboutTheAuthorTextContainer: {
-    marginTop: 5,
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  aboutTheAuthorText: {
-    color: 'black',
-    fontSize: 18
-  },
-  bigDescriptionContainer: {
-    marginTop: 5,
-    backgroundColor: 'white',
-  },
-  bigDescription: {
-    color: 'black',
-    fontSize: 15,
-    margin: 20,
-  },
-  postContainer: {
-    backgroundColor: 'white',
-    marginBottom: 5,
-  },
-  postTextContainer: {
-    alignItems: 'center',
-    margin: 20
-  },
-  postText: {
-    fontSize: 15,
-    color: 'black'
-  },
-  postsContainer: {
     marginTop: 5,
   },
 });

@@ -30,6 +30,7 @@ class Registration extends Component {
       image: '',
       unameAvailable: false,
       wrongCredentials: false,
+      emailOrUsername: '',
     }
   }
   onImageChange(image){
@@ -88,7 +89,7 @@ class Registration extends Component {
         uname: text,
       }),
     };
-    const fetched = await fetch('http://192.168.8.108:8080/uname_check', unameFetchOptions);
+    const fetched = await fetch('http://192.168.1.212:8080/uname_check', unameFetchOptions);
     const jsoned = await fetched.json();
     return jsoned.unameAvailable;
   }
@@ -162,7 +163,7 @@ class Registration extends Component {
       });
     }else if(propName === 'toFootBar'){
       const DEMO_TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
-      fetch("http://192.168.8.108:8080/protected/get_feed", {
+      fetch("http://192.168.1.212:8080/protected/get_feed", {
         method: "GET",
         headers: {
           'Authorization': 'Bearer ' + DEMO_TOKEN
@@ -173,9 +174,10 @@ class Registration extends Component {
         reduxStore.dispatch(addFeed(res))
       })
       .then(() => {
-        this.props.navigator.push({
+        this.props.navigator.resetTo({
           name: 'FootBar',
           passProps: {
+            _logout: () => this._logout(),
           },
         });
       })
@@ -185,6 +187,19 @@ class Registration extends Component {
   async _onValueChange(item, selectedValue) {
     try {
       await AsyncStorage.setItem(item, selectedValue);
+    } catch (error) {
+      console.log('AsyncStorage error: ' + error.message);
+    }
+  }
+  async _logout(){
+    try {
+      await AsyncStorage.removeItem(STORAGE_KEY);
+      Alert.alert("Logout Success!");
+      this.props.navigator.resetTo({
+        name: 'Registration',
+        passProps:{
+        }
+      });
     } catch (error) {
       console.log('AsyncStorage error: ' + error.message);
     }
@@ -210,7 +225,7 @@ class Registration extends Component {
         })
       };
       try{
-        const fetched = await fetch('http://192.168.8.108:8080/user_login', request_options)
+        const fetched = await fetch('http://192.168.1.212:8080/user_login', request_options)
         const jsoned = await fetched.json();
         await this._onValueChange(STORAGE_KEY, jsoned.id_token);
         Alert.alert(
@@ -224,6 +239,7 @@ class Registration extends Component {
         return 0;
       }
     }else {
+      Alert.alert('Oops', 'Your credentials are not right!')
       return 0;
     }
   }
@@ -262,7 +278,7 @@ class Registration extends Component {
         })
       };
       try{
-        const fetched = await fetch('http://192.168.8.108:8080/user_registration', request_options)
+        const fetched = await fetch('http://192.168.1.212:8080/user_registration', request_options)
         const jsoned = await fetched.json();
         await this._onValueChange(STORAGE_KEY, jsoned.id_token);
         Alert.alert(
@@ -276,9 +292,24 @@ class Registration extends Component {
         return 0;
       }
     }else{
+      Alert.alert('Oops!', 'Your credentials are not right!')
       this.setState({wrongCredentials: true});
       return 0;
     }
+  }
+  sendImage(){
+    const data = new FormData();
+    data.append('photo', {
+      uri: this.state.image.uri,
+      type: 'image/jpeg',
+      name: `${this.state.userName} image`
+    });
+    fetch('http://192.168.1.212:8080/send_user_image', {
+      method: 'post',
+      body: data
+    }).then(res => {
+      console.log(res)
+    });
   }
   openGitLink() {
     const url = 'https://github.com/iteratehackerspace/ArmDevMobile';

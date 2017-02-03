@@ -8,6 +8,7 @@ import {
   Image,
   Dimensions,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native'
 import Feed from './feed';
 import You from './you';
@@ -23,6 +24,7 @@ export default class FootBar extends Component {
   render() {
       return (
       <View style={style.container}>
+        <StatusBar backgroundColor="#bf0e0e" barStyle="light-content" />
         <ScrollableTabView
           style={{marginTop: 20}}
           initialPage={0}
@@ -31,7 +33,7 @@ export default class FootBar extends Component {
           tabBarUnderlineStyle={{backgroundColor: '#bf0e0e'}}
         >
            <Feed tabLabel="Feed" store={store} navigator={this.props.navigator}/>
-           <You tabLabel="You" store={store} navigator={this.props.navigator} />
+           <You _logout={() => this.props._logout()} tabLabel="You" store={store} navigator={this.props.navigator} />
            <ForumSelector tabLabel="Forum" navigator={this.props.navigator} />
          </ScrollableTabView>
       </View>
