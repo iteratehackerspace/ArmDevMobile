@@ -31,20 +31,20 @@ class Post extends Component {
     });
     const getComments = store[this.props.clickIndex].comments.map((comment, idx) => {
       return(
-        <View key={idx} style={style.commentContainer}>
+        <View key={idx} style={{backgroundColor: 'white',marginTop: 3,flexDirection: 'row'}}>
           <Image
-            style={style.imageStyle}
+            style={{width: 50,height: 50,borderRadius: 1000,marginLeft: 20}}
             source={require('../assets/trump.jpg')}
           />
           <View>
-            <View style={style.authorTextContainer}>
-              <Text style={style.authorText}>{comment.author.fullName}</Text>
+            <View style={{marginLeft: 10}}>
+              <Text style={{color: 'black'}}>{comment.author.fullName}</Text>
             </View>
-            <View style={style.authorDateContainer}>
+            <View style={{marginLeft: 10}}>
               <Text>{comment.time}</Text>
             </View>
-            <View style={style.commentTextContainer}>
-              <Text style={style.commentText}>{comment.text}</Text>
+            <View style={{alignItems: 'center',margin: 10}}>
+              <Text style={{fontSize: 14,color: 'black'}}>{comment.text}</Text>
             </View>
           </View>
         </View>
@@ -53,57 +53,57 @@ class Post extends Component {
     return(
       <View style={style.container}>
         <ScrollView>
-          <View style={style.postContainer}>
-            <View style={style.titleContainer}>
-              <Text style={style.title}>{store[this.props.clickIndex].title}</Text>
+          <View style={{backgroundColor: 'white'}}>
+            <View style={{alignItems: 'center',marginTop: 20,marginLeft: 20,marginRight: 20,marginBottom: 10}}>
+              <Text style={{fontSize: 22,fontWeight: 'bold',color: 'black'}}>{store[this.props.clickIndex].title}</Text>
             </View>
-            <View style={style.tagContainer}>
-              <Text style={style.tag}>
+            <View style={{flexDirection: 'row',marginLeft: 20,marginBottom: 10,marginRight: 20,justifyContent: 'center'}}>
+              <Text style={{color: 'black',fontWeight: '100',fontSize: 12}}>
                 {getTags}
               </Text>
             </View>
-            <View style={style.authorContainer}>
+            <View style={{flexDirection: 'row'}}>
               <Image
-                style={style.imageStyle}
+                style={{width: 50,height: 50,borderRadius: 1000,marginLeft: 20}}
                 source={require('../assets/trump.jpg')}
               />
               <View>
-                <View style={style.authorTextContainer}>
-                  <Text style={style.authorText}>{store[this.props.clickIndex].author.fullName}</Text>
+                <View style={{marginLeft: 10}}>
+                  <Text style={{color: 'black'}}>{store[this.props.clickIndex].author.fullName}</Text>
                 </View>
-                <View style={style.authorDateContainer}>
+                <View style={{marginLeft: 10}}>
                   <Text>{store[this.props.clickIndex].time}</Text>
                 </View>
               </View>
             </View>
-            <View style={style.postTextContainer}>
-              <Text style={style.postText}>{store[this.props.clickIndex].text}</Text>
+            <View style={{alignItems: 'center',margin: 20}}>
+              <Text style={{fontSize: 15,color: 'black'}}>{store[this.props.clickIndex].text}</Text>
             </View>
           </View>
-          <View style={style.aboutTheAuthorTextContainer}>
-            <Text style={style.aboutTheAuthorText}>About the author</Text>
+          <View style={{marginTop: 5,alignItems: 'center',backgroundColor: 'white'}}>
+            <Text style={{color: 'black',fontSize: 18}}>About the author</Text>
           </View>
-          <View style={style.aboutTheAuthorContainer}>
+          <View style={{marginTop: 5,alignItems: 'center',backgroundColor: 'white',flexDirection: 'row'}}>
             <Image
-              style={style.imageStyle}
+              style={{width: 50,height: 50,borderRadius: 1000,marginLeft: 20}}
               source={require('../assets/trump.jpg')}
             />
             <View>
-              <View style={style.authorTextContainer}>
-                <Text style={style.authorText}>{store[this.props.clickIndex].author.fullName}</Text>
+              <View style={{marginLeft: 10}}>
+                <Text style={{color: 'black'}}>{store[this.props.clickIndex].author.fullName}</Text>
               </View>
-              <View style={style.authorDescriptionContainer}>
-                <Text style={style.authorDescription}>{store[this.props.clickIndex].author.ShortDescription}</Text>
+              <View style={{marginLeft: 10}}>
+                <Text style={{color: 'black'}}>{store[this.props.clickIndex].author.ShortDescription}</Text>
               </View>
             </View>
           </View>
-          <View style={style.aboutTheAuthorTextContainer}>
-            <Text style={style.aboutTheAuthorText}>Comments</Text>
+          <View style={{marginTop: 5,alignItems: 'center',backgroundColor: 'white'}}>
+            <Text style={{color: 'black',fontSize: 18}}>Comments</Text>
           </View>
           {getComments}
         </ScrollView>
-        <View style={style.footer}>
-          <View style={style.upFoot}>
+        <View style={{backgroundColor: 'white',marginTop: 2}}>
+          <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
             <TouchableOpacity 
               style={this.state.liked ? style.likesContainerUnLike : style.likesContainerLike}
               activeOpacity={1}
@@ -111,19 +111,19 @@ class Post extends Component {
               <Text style={this.state.liked ? style.likesUnLike : style.likesLike}>{this.state.liked ? `UnLike` : `Like`}|{store[this.props.clickIndex].likes}</Text>
             </TouchableOpacity>
             <View 
-              style={style.commentsContainer}>
-              <Text style={style.comments}>Seen|{store[this.props.clickIndex].seen}</Text>
+              style={{margin: 5}}>
+              <Text style={{color: 'black',margin: 2}}>Seen|{store[this.props.clickIndex].seen}</Text>
             </View>
             <View 
-              style={style.commentsContainer}>
-              <Text style={style.comments}>Comments|{store[this.props.clickIndex].comments.length}</Text>
+              style={{margin: 5}}>
+              <Text style={{color: 'black',margin: 2}}>Comments|{store[this.props.clickIndex].comments.length}</Text>
             </View>
           </View>
           <TouchableOpacity 
-            style={style.cancelBottomContainer}
+            style={{backgroundColor: 'black',alignItems: 'center'}}
             activeOpacity={1}
             onPress={() => this.props.navigator.pop()}>
-            <Text style={style.cancelBottom}>X</Text>
+            <Text style={{color: 'white',fontSize: 20}}>X</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -135,55 +135,6 @@ const style = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0d6c9',
     marginTop: 0.05 * height,
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: 'black'
-  },
-  titleContainer: {
-    alignItems: 'center',
-    marginTop: 20,
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 10,
-  },
-  postContainer: {
-    backgroundColor: 'white'
-  },
-  postTextContainer: {
-    alignItems: 'center',
-    margin: 20
-  },
-  postText: {
-    fontSize: 15,
-    color: 'black'
-  },
-  cancelBottomContainer: {
-    backgroundColor: 'black',
-    alignItems: 'center',
-  },
-  cancelBottom: {
-    color: 'white',
-    fontSize: 20,
-  },
-  imageStyle: {
-    width: 50,
-    height: 50,
-    borderRadius: 1000,
-    marginLeft: 20,
-  },
-  authorContainer: {
-    flexDirection: 'row',
-  },
-  authorTextContainer: {
-    marginLeft: 10
-  },
-  authorText: {
-    color: 'black',
-  },
-  authorDateContainer: {
-    marginLeft: 10,
   },
   likesContainerLike: {
     margin: 5,
@@ -203,65 +154,4 @@ const style = StyleSheet.create({
     color: '#bf0e0e',
     margin: 2,
   },
-  comments: {
-    color: 'black',
-    margin: 2
-  },
-  commentsContainer: {
-    margin: 5,
-  },
-  upFoot: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  aboutTheAuthorTextContainer: {
-    marginTop: 5,
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  aboutTheAuthorText: {
-    color: 'black',
-    fontSize: 18
-  },
-  aboutTheAuthorContainer: {
-    marginTop: 5,
-    alignItems: 'center',
-    backgroundColor: 'white',
-    flexDirection: 'row'
-  },
-  footer: {
-    backgroundColor: 'white',
-    marginTop: 2
-  },
-  authorDescriptionContainer: {
-    marginLeft: 10,
-  },
-  authorDescription: {
-    color: 'black'
-  },
-  tagContainer: {
-    flexDirection: 'row',
-    marginLeft: 20,
-    marginBottom: 10,
-    marginRight: 20,
-    justifyContent: 'center',
-  },
-  tag: {
-    color: 'black',
-    fontWeight: '100',
-    fontSize: 12,
-  },
-  commentContainer: {
-    backgroundColor: 'white',
-    marginTop: 3,
-    flexDirection: 'row',
-  },
-  commentTextContainer: {
-    alignItems: 'center',
-    margin: 10,
-  },
-  commentText: {
-    fontSize: 14,
-    color: 'black',
-  }
 });
