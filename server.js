@@ -13,14 +13,22 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const express_jwt = require('express-jwt')
 const cors = require('cors');
-
 const config = {
   secret: "iterate",
 }
 let jwtCheck = express_jwt({
   secret: config.secret
 });
-
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './testData/images')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + file.originalname + '-' + Date.now() + '.jpg')
+  }
+})
+const upload = multer({ storage: storage });
 app.use('/protected', jwtCheck);
 const createToken = (user) => {
   return jwt.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60*60*24*180 });
@@ -36,9 +44,7 @@ app.post('/user_registration', json_parser, form_parser, (req, res) => {
       console.log('Error connecting to the DB: ' + err);
     } else {
       console.log("Successfully connected to the DB.");
-        console.log('hey');
         const collection = db.collection('users');
-        console.log(userData);
         let len = await collection.count();
         userData.id = await len++;
         await collection.insert([userData], (err, result)=>{
@@ -121,4 +127,9 @@ app.post('/protected/get_forum_messages', json_parser, form_parser, (req, res) =
       break;
     default:
   }
+});
+app.post('/send_user_image', upload.single('avatar'), (req, res) => {
+  console.log(req.file);
+  console.log(req.body);
+  res.status(200).send('image received');
 });
