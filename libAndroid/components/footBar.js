@@ -17,7 +17,6 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import {getFeed} from './registration';
 import { reduxStore } from '../containers/App';
 const { width, height } = Dimensions.get('window');
-let store;
 export default class FootBar extends Component {
   _navigate(propName, name) {
   }
@@ -32,8 +31,8 @@ export default class FootBar extends Component {
           tabBarActiveTextColor='#bf0e0e'
           tabBarUnderlineStyle={{backgroundColor: '#bf0e0e'}}
         >
-           <Feed tabLabel="Feed" store={store} navigator={this.props.navigator}/>
-           <You _logout={() => this.props._logout()} tabLabel="You" store={store} navigator={this.props.navigator} />
+           <Feed tabLabel="Feed" store={this.props.store.state} navigator={this.props.navigator}/>
+           <You _logout={() => this.props._logout()} tabLabel="You" store={this.props.store.you} navigator={this.props.navigator} />
            <ForumSelector tabLabel="Forum" navigator={this.props.navigator} />
          </ScrollableTabView>
       </View>

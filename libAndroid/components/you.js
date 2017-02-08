@@ -10,28 +10,60 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-
+let you;
 const { width, height } = Dimensions.get('window');
 import { reduxStore } from '../containers/App';
-let store;
 export default
 class You extends Component {
-  componentWillMount() {
-    store = reduxStore.getState().armDevMobile;
+  componentWillMount(){
+    you = this.props.store;
   }
   render(){
-    const usersPosts = store.map((post, idx) => {
-      return(
-        <View
-          key={idx}
-          style={{backgroundColor: 'white',marginBottom: 5}}>
+    let usersPosts;
+    try{
+      usersPosts = !you.posts ? null : you.posts.map((post, idx) => {
+        return(
           <View
-            style={{alignItems: 'center',margin: 20}}>
-            <Text style={{fontSize: 15,color: 'black'}}>{post.title}</Text>
+            key={idx}
+            style={{backgroundColor: 'white',marginBottom: 5}}>
+            <View
+              style={{alignItems: 'center',margin: 20}}>
+              <Text style={{fontSize: 15,color: 'black'}}>{post.title}</Text>
+            </View>
+          </View>
+        );
+      });
+    }catch(e) {
+      console.log(e);
+    }
+    let aboutTheAuthorBigDescription;
+    try{
+      aboutTheAuthorBigDescription = !you.bigDescription ? null : 
+      (
+        <View>
+          <View style={{marginTop: 5,alignItems: 'center',backgroundColor: 'white'}}>
+            <Text style={{color: 'black',fontSize: 18}}>About the author</Text>
+          </View>
+          <View style={{marginTop: 5,backgroundColor: 'white'}}>
+            <Text style={{color: 'black',fontSize: 15,margin: 20}}>{you.bigDescription}</Text>
           </View>
         </View>
-      );
-    });
+      )
+    }catch(e){
+      console.log(e);
+    }
+    let aboutTheAuthorShortDescription;
+    try{
+      aboutTheAuthorShortDescription = !you.shortDescription ? <Text>''</Text> :
+      (
+        <Text
+          style={{marginTop: 2,marginLeft: 40,color: 'black',fontSize: '200',fontSize: 14}}>
+          {you.shortDescription}
+        </Text>
+      )
+    }catch(e){
+      console.log(e);
+    }
     return(
       <ScrollView style={{backgroundColor: '#f0d6c9',height: height}}>
         <View style={style.container}>
@@ -44,25 +76,28 @@ class You extends Component {
               <View style={{width: width * 0.7}}>
                 <Text 
                   style={{marginTop: 10,marginLeft: 40,color: 'black',fontSize: 'bold',fontSize: 20}}>
-                  {store[0].author.fullName}
+                  {you.fullName}
                 </Text>
                 <Text
-                  style={{marginTop: 2,marginLeft: 40,color: 'black',fontSize: '200',fontSize: 14}}>
-                  {store[0].author.ShortDescription}
+                  style={{marginLeft: 40,color: 'black',fontSize: '300',fontSize: 13}}>
+                  @{you.uname}
                 </Text>
               </View>
             </View>
-            <View style={{flexDirection: 'row'}}>
+            {aboutTheAuthorBigDescription}
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <View style={{marginLeft: 25,marginBottom: 10,backgroundColor: '#DAA4E7',borderRadius: 7}}>
                 <Text style={{fontSize: 10,margin: 5}}>followers|123123</Text>
               </View>
+              <View style={{marginRight: 25,marginBottom: 10}}>
+                <TouchableOpacity>
+                  <Image 
+                    source={require('../assets/writePost.png')}
+                    style={{width: 20, height: 20}}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          <View style={{marginTop: 5,alignItems: 'center',backgroundColor: 'white'}}>
-            <Text style={{color: 'black',fontSize: 18}}>About the author</Text>
-          </View>
-          <View style={{marginTop: 5,backgroundColor: 'white'}}>
-            <Text style={{color: 'black',fontSize: 15,margin: 20}}>{store[0].author.bigDescription}</Text>
           </View>
           <TouchableOpacity onPress={() => this.props._logout()} style={{marginTop: 5, backgroundColor: 'white', alignItems: 'center'}}>
             <Text style={{color: 'red', margin: 15, fontSize: 22}}>Log out</Text>

@@ -21,8 +21,8 @@ class Feed extends Component {
       clickIndex: 0,
     };
   }
-  componentWillMount() {
-    store = reduxStore.getState().armDevMobile;
+  componentWillMount(){
+    console.log(this.props.store);
   }
   _navigate(propName, name) {
     if(propName === 'toPost'){
@@ -48,7 +48,7 @@ class Feed extends Component {
     }
   }
   render(){
-    const renderPosts = store.map((post, idx) => {
+    const renderPosts = this.props.store.map((post, idx) => {
       return(
         <TouchableOpacity
           key={idx}

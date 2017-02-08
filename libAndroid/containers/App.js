@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import * as reducers from '../reducers';
 import ArmDevMobileApp from './ArmDevMobileApp';
-import { addPost, addFeed } from '../actions/ArmDevMobileActions'
+import { addPost, addFeed, addYou } from '../actions/ArmDevMobileActions'
 
 const reducer = combineReducers(reducers);
 export const reduxStore = createStore(reducer);
