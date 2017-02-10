@@ -20,12 +20,21 @@ class Feed extends Component {
     this.state = {
       clickIndex: 0,
     };
+    this.searchObj = this.searchObj.bind(this);
   }
-  componentWillMount(){
-    console.log(this.props.store);
+  searchObj (arr, query) {
+    function check(value) {
+      return value.id === query;
+    }
+
+    const filtered = arr.filter(check);
+    return filtered[0];
   }
   _navigate(propName, name) {
     if(propName === 'toPost'){
+      const obj = this.searchObj(this.props.store, this.state.clickIndex);
+      console.log(obj);
+      console.log('here where obj');
       this.props.navigator.push({
         name: 'Post',
         leftButton: (
@@ -37,6 +46,7 @@ class Feed extends Component {
         ),
         passProps: {
           clickIndex: this.state.clickIndex,
+          post: obj,
         },
       });
     }else if(propName === 'toYou'){
@@ -53,7 +63,7 @@ class Feed extends Component {
         <TouchableOpacity
           key={idx}
           activeOpacity={0.9}
-          onPressIn={() => this.setState({clickIndex: idx})}
+          onPressIn={() => this.setState({clickIndex: post.id})}
           onPress={() => this._navigate('toPost')}>
           <View style={style.postStyle}>
             <View style={{margin: 15}}>

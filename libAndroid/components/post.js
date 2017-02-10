@@ -12,8 +12,6 @@ import {
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
-import { reduxStore } from '../containers/App';
-let store;
 export default
 class Post extends Component {
   constructor(){
@@ -22,14 +20,11 @@ class Post extends Component {
   }
   _navigate(propName, name) {
   }
-  componentWillMount() {
-    store = reduxStore.getState().armDevMobile;
-  }
   render(){
-    const getTags = store[this.props.clickIndex].tags.map((tag, idx) => {
+    const getTags = this.props.post.tags.map((tag, idx) => {
       return tag + '  ';
     });
-    const getComments = store[this.props.clickIndex].comments.map((comment, idx) => {
+    const getComments = this.props.post.comments.map((comment, idx) => {
       return(
         <View key={idx} style={{backgroundColor: 'white',marginTop: 3,flexDirection: 'row'}}>
           <Image
@@ -55,7 +50,7 @@ class Post extends Component {
         <ScrollView>
           <View style={{backgroundColor: 'white'}}>
             <View style={{alignItems: 'center',marginTop: 20,marginLeft: 20,marginRight: 20,marginBottom: 10}}>
-              <Text style={{fontSize: 22,fontWeight: 'bold',color: 'black'}}>{store[this.props.clickIndex].title}</Text>
+              <Text style={{fontSize: 22,fontWeight: 'bold',color: 'black'}}>{this.props.post.title}</Text>
             </View>
             <View style={{flexDirection: 'row',marginLeft: 20,marginBottom: 10,marginRight: 20,justifyContent: 'center'}}>
               <Text style={{color: 'black',fontWeight: '100',fontSize: 12}}>
@@ -69,15 +64,15 @@ class Post extends Component {
               />
               <View>
                 <View style={{marginLeft: 10}}>
-                  <Text style={{color: 'black'}}>{store[this.props.clickIndex].author.fullName}</Text>
+                  <Text style={{color: 'black'}}>{this.props.post.author.fullName}</Text>
                 </View>
                 <View style={{marginLeft: 10}}>
-                  <Text>{store[this.props.clickIndex].time}</Text>
+                  <Text>{this.props.post.time}</Text>
                 </View>
               </View>
             </View>
             <View style={{alignItems: 'center',margin: 20}}>
-              <Text style={{fontSize: 15,color: 'black'}}>{store[this.props.clickIndex].text}</Text>
+              <Text style={{fontSize: 15,color: 'black'}}>{this.props.post.text}</Text>
             </View>
           </View>
           <View style={{marginTop: 5,alignItems: 'center',backgroundColor: 'white'}}>
@@ -90,10 +85,10 @@ class Post extends Component {
             />
             <View>
               <View style={{marginLeft: 10}}>
-                <Text style={{color: 'black'}}>{store[this.props.clickIndex].author.fullName}</Text>
+                <Text style={{color: 'black'}}>{this.props.post.author.fullName}</Text>
               </View>
               <View style={{marginLeft: 10}}>
-                <Text style={{color: 'black'}}>{store[this.props.clickIndex].author.ShortDescription}</Text>
+                <Text style={{color: 'black'}}>{this.props.post.author.ShortDescription}</Text>
               </View>
             </View>
           </View>
@@ -108,15 +103,15 @@ class Post extends Component {
               style={this.state.liked ? style.likesContainerUnLike : style.likesContainerLike}
               activeOpacity={1}
               onPress={() => this.setState({liked: this.state.liked ? false : true}) }>
-              <Text style={this.state.liked ? style.likesUnLike : style.likesLike}>{this.state.liked ? `UnLike` : `Like`}|{store[this.props.clickIndex].likes}</Text>
+              <Text style={this.state.liked ? style.likesUnLike : style.likesLike}>{this.state.liked ? `UnLike` : `Like`}|{this.props.post.likes}</Text>
             </TouchableOpacity>
             <View 
               style={{margin: 5}}>
-              <Text style={{color: 'black',margin: 2}}>Seen|{store[this.props.clickIndex].seen}</Text>
+              <Text style={{color: 'black',margin: 2}}>Seen|{this.props.post.seen}</Text>
             </View>
             <View 
               style={{margin: 5}}>
-              <Text style={{color: 'black',margin: 2}}>Comments|{store[this.props.clickIndex].comments.length}</Text>
+              <Text style={{color: 'black',margin: 2}}>Comments|{this.props.post.comments.length}</Text>
             </View>
           </View>
           <TouchableOpacity 

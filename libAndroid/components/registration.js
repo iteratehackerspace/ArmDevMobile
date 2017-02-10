@@ -87,7 +87,7 @@ class Registration extends Component {
             body: JSON.stringify({uname: text})
         };
 
-        const fetched = await fetch('http://10.15.1.230:8080/uname_check', unameFetchOptions);
+        const fetched = await fetch('http://192.168.1.212:8080/uname_check', unameFetchOptions);
         const jsoned = await fetched.json();
         return jsoned.unameAvailable;
     }
@@ -177,7 +177,7 @@ class Registration extends Component {
             });
         } else if (propName === 'toFootBar') {
             const DEMO_TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
-            fetch("http://10.15.1.230:8080/protected/get_feed", {
+            fetch("http://192.168.1.212:8080/protected/get_feed", {
                 method: "GET",
                 headers: {
                     'Authorization': 'Bearer ' + DEMO_TOKEN
@@ -221,7 +221,7 @@ class Registration extends Component {
                 body: JSON.stringify({emailOrUsername, password})
             };
             try {
-                const fetched = await fetch('http://10.15.1.230:8080/user_login', request_options)
+                const fetched = await fetch('http://192.168.1.212:8080/user_login', request_options)
                 const jsoned = await fetched.json();
                 await this._onValueChange(STORAGE_KEY, jsoned.id_token);
                 Alert.alert("Login Success!", "Hoorah!!")
@@ -272,7 +272,7 @@ class Registration extends Component {
                 body: data
             }
             try {
-                const fetched = await fetch('http://10.15.1.230:8080/user_registration', request_options)
+                const fetched = await fetch('http://192.168.1.212:8080/user_registration', request_options)
                 const jsoned = await fetched.json();
                 await this._onValueChange(STORAGE_KEY, jsoned.id_token);
                 Alert.alert("Signup Success!", "Hoorah!!")
