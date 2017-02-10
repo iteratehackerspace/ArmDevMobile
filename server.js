@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
         cb(null, './testData/images')
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname + '-' + file.fieldname + '-' + Date.now() + '.jpg')
+        cb(null, file.originalname + '_' + file.fieldname + '_' + Date.now() + '.jpg')
     }
 })
 const upload = multer({
@@ -43,8 +43,8 @@ const createToken = (user) => {
 }
 http.listen(8080, () => console.log('server started on port 8080'));
 
-
-app.post('/user_registration', json_parser, form_parser, (req, res) => {
+app.use(express.static('./testData/images'));
+app.post('/user_registration', upload.single('avatar'), (req, res) => {
     let userData = req.body;
     console.log(userData);
     MongoClient.connect(db_url, async(err, db) => {
@@ -55,6 +55,9 @@ app.post('/user_registration', json_parser, form_parser, (req, res) => {
             const collection = db.collection('users');
             let len = await collection.count();
             userData.id = await len++;
+            if (req.file) {
+                userData.path = req.file.filename;
+            }
             await collection.insert([userData], (err, result) => {
                 if (err) {
                     console.log("Could not insert in the DB: " + err);
@@ -160,18 +163,3 @@ app.post('/protected/get_forum_messages', json_parser, form_parser, (req, res) =
         default:
     }
 });
-app.post('/send_user_image', upload.single('avatar'), (req, res) => {
-    console.log(req.file);
-    console.log(req.body);
-    res.status(200).send('image received');
-});
-app.post('/get_user_image', json_parser, form_parser, (req, res) => {
-    fs.readFile(`./testData/images/${req.body.imageName}`, (err, data) => {
-        if (err) throw err;
-        console.log(data);
-        res.writeHead(200, {
-            'Content-Type': 'image/jpg'
-        });
-        res.end(img, 'binary');
-    });
-})

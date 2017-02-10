@@ -87,7 +87,7 @@ class Registration extends Component {
             body: JSON.stringify({uname: text})
         };
 
-        const fetched = await fetch('http://192.168.8.108:8080/uname_check', unameFetchOptions);
+        const fetched = await fetch('http://10.15.1.230:8080/uname_check', unameFetchOptions);
         const jsoned = await fetched.json();
         return jsoned.unameAvailable;
     }
@@ -177,7 +177,7 @@ class Registration extends Component {
             });
         } else if (propName === 'toFootBar') {
             const DEMO_TOKEN = await AsyncStorage.getItem(STORAGE_KEY);
-            fetch("http://192.168.8.108:8080/protected/get_feed", {
+            fetch("http://10.15.1.230:8080/protected/get_feed", {
                 method: "GET",
                 headers: {
                     'Authorization': 'Bearer ' + DEMO_TOKEN
@@ -221,7 +221,7 @@ class Registration extends Component {
                 body: JSON.stringify({emailOrUsername, password})
             };
             try {
-                const fetched = await fetch('http://192.168.8.108:8080/user_login', request_options)
+                const fetched = await fetch('http://10.15.1.230:8080/user_login', request_options)
                 const jsoned = await fetched.json();
                 await this._onValueChange(STORAGE_KEY, jsoned.id_token);
                 Alert.alert("Login Success!", "Hoorah!!")
@@ -251,23 +251,30 @@ class Registration extends Component {
             return 0;
         }
         if (firstName.trim() && lastName.trim() && email.trim() && userName.trim().length > 5 && password.trim().length > 6) {
+            let data = new FormData();
+            if(this.state.image){
+              data.append('avatar', {
+                  uri: this.state.image.path,
+                  name: this.state.userName,
+                  type: 'image/jpg'
+              });
+            }
+            data.append('fullName', firstName + " " + lastName);
+            data.append('email', email);
+            data.append('uname', userName);
+            data.append('password', password);
             const request_options = {
-                method: 'post',
-                headers: new Headers({'Accept': 'application/json', 'Content-Type': 'application/json'}),
-                body: JSON.stringify({
-                    fullName: firstName + " " + lastName,
-                    email,
-                    uname: userName,
-                    password
-                })
-            };
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data'
+                },
+                body: data
+            }
             try {
-                const fetched = await fetch('http://192.168.8.108:8080/user_registration', request_options)
+                const fetched = await fetch('http://10.15.1.230:8080/user_registration', request_options)
                 const jsoned = await fetched.json();
                 await this._onValueChange(STORAGE_KEY, jsoned.id_token);
-                if (this.state.image) {
-                    this.sendImage();
-                }
                 Alert.alert("Signup Success!", "Hoorah!!")
                 return jsoned;
             } catch (e) {
@@ -280,23 +287,6 @@ class Registration extends Component {
             this.setState({wrongCredentials: true});
             return 0;
         }
-    }
-    sendImage() {
-        let data = new FormData();
-        data.append('avatar', {
-            uri: this.state.image.path,
-            name: this.state.userName,
-            type: 'image/jpg'
-        });
-        const config = {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data'
-            },
-            body: data
-        }
-        return fetch('http://192.168.8.108:8080/send_user_image', config).then((res) => console.log(res)).catch((err) => console.log(err))
     }
     openGitLink() {
         const url = 'https://github.com/iteratehackerspace/ArmDevMobile';

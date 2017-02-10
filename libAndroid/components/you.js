@@ -71,7 +71,7 @@ class You extends Component {
             <View style={{margin: 15,flexDirection: 'row'}}>
               <Image
                 style={{width: 50,height: 50,borderRadius: 1000,marginLeft: 10}}
-                source={require('../assets/trump.jpg')}
+                source={ you.path ? {uri : `http://10.15.1.230:8080/${you.path}`} : require('../assets/trump.jpg')}
               />
               <View style={{width: width * 0.7}}>
                 <Text 
