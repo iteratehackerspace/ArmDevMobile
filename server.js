@@ -73,6 +73,19 @@ app.post('/user_registration', upload.single('avatar'), (req, res) => {
         }
     });
 });
+app.post('/change_user_avatar', upload.single('avatar'), (req, res) => {
+  const { fullName, email, uname, password, id } = req.body;
+  const path = req.file.filename;
+  MongoClient.connect(db_url, async(err, db) => {
+      if (err) {
+          console.log('Error connecting to the DB: ' + err);
+      } else {
+          console.log("Successfully connected to the DB.");
+          const collection = db.collection('users');
+          let update = await collection.update({ uname, email },{fullName, email, uname, password, id, path});
+      }
+  });
+})
 app.post('/uname_check', json_parser, form_parser, (req, res) => {
     const unameToCheck = req.body.uname;
     MongoClient.connect(db_url, (err, db) => {
