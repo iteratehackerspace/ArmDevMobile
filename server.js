@@ -83,6 +83,8 @@ app.post('/change_user_avatar', upload.single('avatar'), (req, res) => {
           console.log("Successfully connected to the DB.");
           const collection = db.collection('users');
           let update = await collection.update({ uname, email },{fullName, email, uname, password, id, path});
+          console.log(path);
+          res.status(201).send(path);
       }
   });
 })

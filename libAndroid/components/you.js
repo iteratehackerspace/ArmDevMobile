@@ -17,34 +17,47 @@ import Menu, {
   MenuTrigger
 } from 'react-native-menu';
 import ImagePicker from 'react-native-image-crop-picker';
-let you;
 const { width, height } = Dimensions.get('window');
 import { reduxStore } from '../containers/App';
 export default
 class You extends Component {
+  constructor(){
+    super();
+    this.state = {
+      you: {},
+    };
+  }
   componentWillMount(){
-    you = this.props.store;
+    this.setState({you: this.props.store});
   }
   addPhotoGallery(){
     ImagePicker.openPicker({
       width: 200,
       height: 200,
       cropping: true
-    }).then(image => {
-      this.sendImage(image);
-    });
+    })
+    .then(image => this.sendImage(image))
+    .then((path) => {
+      let newYou = this.state.you;
+      newYou.path = path;
+      this.setState({you: newYou});
+    })
   }
   addPhotoCamera(){
     ImagePicker.openCamera({
       width: 200,
       height: 200,
       cropping: true
-    }).then(image => {
-      this.sendImage(image);
-    });
+    })
+    .then(image => this.sendImage(image))
+    .then((path) => {
+      let newYou = this.state.you;
+      newYou.path = path;
+      this.setState({you: newYou});
+    })
   }
-  sendImage(image){
-    const { fullName, email, uname, password, id } = you;
+  async sendImage(image){
+    const { fullName, email, uname, password, id } = this.state.you;
     let data = new FormData();
     if(image){
       data.append('avatar', {
@@ -66,14 +79,14 @@ class You extends Component {
         },
         body: data
     }
-    console.log(request_options);
-    fetch('http://192.168.8.108:8080/change_user_avatar', request_options)
-    .then(() => console.log('ready'));
+    const fetched = await fetch('http://192.168.8.108:8080/change_user_avatar', request_options);
+    const jsoned = await fetched.text();
+    return jsoned;
   }
   render(){
     let usersPosts;
     try{
-      usersPosts = !you.posts ? null : you.posts.map((post, idx) => {
+      usersPosts = !this.state.you.posts ? null : this.state.you.posts.map((post, idx) => {
         return(
           <View
             key={idx}
@@ -90,14 +103,14 @@ class You extends Component {
     }
     let aboutTheAuthorBigDescription;
     try{
-      aboutTheAuthorBigDescription = !you.bigDescription ? null : 
+      aboutTheAuthorBigDescription = !this.state.you.bigDescription ? null : 
       (
         <View>
           <View style={{marginTop: 5,alignItems: 'center',backgroundColor: 'white'}}>
             <Text style={{color: 'black',fontSize: 18}}>About the author</Text>
           </View>
           <View style={{marginTop: 5,backgroundColor: 'white'}}>
-            <Text style={{color: 'black',fontSize: 15,margin: 20}}>{you.bigDescription}</Text>
+            <Text style={{color: 'black',fontSize: 15,margin: 20}}>{this.state.you.bigDescription}</Text>
           </View>
         </View>
       )
@@ -106,11 +119,11 @@ class You extends Component {
     }
     let aboutTheAuthorShortDescription;
     try{
-      aboutTheAuthorShortDescription = !you.shortDescription ? <Text>''</Text> :
+      aboutTheAuthorShortDescription = !this.state.you.shortDescription ? <Text>''</Text> :
       (
         <Text
           style={{marginTop: 2,marginLeft: 40,color: 'black',fontSize: '200',fontSize: 14}}>
-          {you.shortDescription}
+          {this.state.you.shortDescription}
         </Text>
       )
     }catch(e){
@@ -128,7 +141,7 @@ class You extends Component {
                   <MenuTrigger style={{}}>
                     <Image
                       style={{width: 100,height: 100,borderRadius: 1000}}
-                      source={ you.path ? {uri : `http://192.168.8.108:8080/${you.path}`} : require('../assets/trump.jpg')}
+                      source={ this.state.you.path ? {uri : `http://192.168.8.108:8080/${this.state.you.path}`} : require('../assets/trump.jpg')}
                     />
                   </MenuTrigger>
                   <MenuOptions optionsContainerStyle={{width: 120}}>
@@ -145,11 +158,11 @@ class You extends Component {
                 <View style={{width: width * 0.7}}>
                   <Text 
                     style={{marginTop: 10,marginLeft: 40,color: 'black',fontSize: 'bold',fontSize: 20}}>
-                    {you.fullName}
+                    {this.state.you.fullName}
                   </Text>
                   <Text
                     style={{marginLeft: 40,color: 'black',fontSize: '300',fontSize: 13}}>
-                    @{you.uname}
+                    @{this.state.you.uname}
                   </Text>
                 </View>
               </View>
